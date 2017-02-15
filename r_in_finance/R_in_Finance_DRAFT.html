@@ -145,15 +145,48 @@ $(document).ready(function () {
 </div>
 <div id="performanceanalytics" class="section level2">
 <h2>PerformanceAnalytics</h2>
-<p>The <code>PerformanceAnalytics</code> package includes a large collection of econometric functions for financial performance analysis, many of which are described in <em>“Practical Portfolio Performance Measurement and Attribution”</em> by Carl Bacon. These functions enable analysis of individual asset and portfolio (aggregation of multiple assets) returns using popular statistical methods for measuring performance.</p>
+<p>The <code>PerformanceAnalytics</code> package includes a large collection of econometric functions for financial performance analysis, many of which are described in <em>“Practical Portfolio Performance Measurement and Attribution”</em> by Carl Bacon [REF]. These functions enable analysis of individual asset and portfolio (aggregation of multiple assets) returns using popular statistical methods for measuring performance.</p>
+<pre class="r"><code># REF
+@Book{Bacon2004,
+  author = {Carl Bacon},
+  title = {Practical Portfolio Performance Measurement and Attribution},
+  publisher = {John Wiley &amp; Sons Ltd},
+  year = {2004},
+  address = {West Sussex, England}
+}</code></pre>
 </div>
 </div>
 <div id="new-tools-tidyverse" class="section level1">
 <h1>New Tools: tidyverse</h1>
-<p>In parallel, with the progress being made within the R in Finance community, developers at RStudio have been working to provide useful tools for data science in R, namely the <code>tidyverse</code>. These include several packages worth describing in more detail.</p>
+<p>In parallel with the progress being made within the R in Finance community, developers at <em>RStudio</em> have been working to provide useful tools for data science in R, namely the “tidyverse”. The “tidyverse” or “tidy” ecosystem is a collection of packages that fundamentally and philosophically work together utilizing “tidy” data, which is discussed in [INSERT REF]. These include several packages worth describing in more detail.</p>
+<pre class="r"><code># REF
+@Article{tidy-data,
+  author = {Hadley Wickham},
+  issue = {10},
+  journal = {The Journal of Statistical Software},
+  selected = {TRUE},
+  title = {Tidy data},
+  url = {http://www.jstatsoft.org/v59/i10/},
+  volume = {59},
+  year = {2014},
+  bdsk-url-1 = {http://www.jstatsoft.org/v59/i10/},
+}</code></pre>
 <div id="dplyr-tidyr" class="section level2">
 <h2>dplyr / tidyr</h2>
-<p>The <code>dplyr</code> and <code>tidyr</code> packages provide tools to clean and manipulate data using the <em>“split-apply-combine”</em> framework popularized by Hadley Wickham in “The Split-Apply-Combine Strategy for Data Analysis”. The major advances were twofold. First, the packages simplified and made consistent many of the most common data manipulation tasks in R. Second and arguably more importantly, the packages incorporated the use of the pipe (<code>%&gt;%</code>) from the <code>magrittr</code> package enabling the functional verbs to follow an easy, efficient, and human-readable workflow.</p>
+<p>The <code>dplyr</code> and <code>tidyr</code> packages provide tools to clean and manipulate data using the <em>“split-apply-combine”</em> framework popularized by Hadley Wickham in “The Split-Apply-Combine Strategy for Data Analysis” [REF]. The major advances were twofold. First, the packages simplified and made consistent many of the most common data manipulation tasks in R. Second, and arguably more important, the packages incorporated the use of the pipe (<code>%&gt;%</code>) from the <code>magrittr</code> package enabling the functional verbs to follow an easy, efficient, and human-readable workflow.</p>
+<pre class="r"><code># REF
+@Article{plyr,
+  author = {Hadley Wickham},
+  journal = {Journal of Statistical Software},
+  number = {1},
+  pages = {1––29},
+  selected = {TRUE},
+  title = {The split-apply-combine strategy for data analysis},
+  url = {http://www.jstatsoft.org/v40/i01/},
+  volume = {40},
+  year = {2011},
+  bdsk-url-1 = {http://www.jstatsoft.org/v40/i01/},
+}</code></pre>
 </div>
 <div id="purrr" class="section level2">
 <h2>purrr</h2>
@@ -166,20 +199,42 @@ $(document).ready(function () {
 <div id="ggplot2" class="section level2">
 <h2>ggplot2</h2>
 <p>The <code>ggplot2</code> package provides a method of creating complex visualizations using a layered approach called the “grammar of graphics”, which is discussed in [INSERT REF]. The <code>ggplot2</code> package has become the dominant form of creating static graphics in the “tidy” ecosystem.</p>
-<p>[ref]</p>
+<pre class="r"><code># REF
+@Article{layered-grammar,
+  author = {Hadley Wickham},
+  doi = {10.1198/jcgs.2009.07098},
+  journal = {Journal of Computational and Graphical Statistics},
+  number = {1},
+  pages = {3–28},
+  selected = {TRUE},
+  title = {A layered grammar of graphics},
+  volume = {19},
+  year = {2010},
+  bdsk-url-1 = {http://dx.doi.org/10.1198/jcgs.2009.07098},
+}</code></pre>
 </div>
 <div id="lubridate" class="section level2">
 <h2>lubridate</h2>
-<p>The <code>lubridate</code> package includes functions to manage date and date-time objects in R, which is essential for working with time series.</p>
-<p>[ref]</p>
+<p>The <code>lubridate</code> package includes functions to manage date and date-time objects in R, which is discussed in [INSERT REF]. The combination of using <code>lubridate</code> with <code>dplyr</code> enables filtering and subseting on dates, which is an essential task in financial analysis. Further, combining <code>lubridate</code> with <code>ggplot2</code> enables graphical visualization using dates and date-times.</p>
+<pre class="r"><code>@Article{lubridate,
+  author = {Garrett Grolemund and Hadley Wickham},
+  journal = {Journal of Statistical Software},
+  number = {3},
+  pages = {1––25},
+  title = {Dates and Times Made Easy with lubridate},
+  url = {http://www.jstatsoft.org/v40/i03/},
+  volume = {40},
+  year = {2011},
+  bdsk-url-1 = {http://www.jstatsoft.org/v40/i03/},
+}</code></pre>
 </div>
 </div>
 <div id="divergent-philosophies-each-with-advantages" class="section level1">
 <h1>Divergent Philosophies, Each with Advantages</h1>
-<p>All of the major finance packages work with the <code>xts</code> system, which is specifically designed for time series analysis. The system works very well. The extensible time series, “xts”, data structure was designed solely for time series analysis. The data structure is much like a numeric matrix, the only major difference being row names consisting of the date or date-time information. The advantage to “xts” objects are the ability to manage numeric data with date or date-time references. The objects can be subset or transformed to different periodicity very easily. The disadvantage is the application is very strict to numeric data, but because of its focus it manages the time series data extremely well.</p>
-<p>Much of the recent innovation in data analysis has occurred within the tidy ecosystem. With the entrance of the <code>tidyverse</code>, scaling analysis using the <em>“split-apply-combine”</em> framework has become easy, efficient, and core functionality. Further, advances in date and date-time functionality has enabled management of time series data within the “tibble” (“tidy” data frame) data structure. As the data science field grows, more innovative functionality will continue to be developed within the “tidy” ecosystem, much of which will be (and is already) useful to the field of financial analysis.</p>
-<p>The two systems, <code>xts</code> and the <code>tidyverse</code>, are very different on a fundamental and philosophical level. Both have advantages that are needed within the realm of financial analysis, but unfortunately the two systems do not work well together. The “xts” system is strictly numeric-based, while the “tidy” system is strictly data frame-based. Passing data between systems is difficult if not painful, and without communication between each the full potential of financial analysis within R is limited.</p>
-<p>To solve this problem, the <code>tidyquant</code> package was developed as a way to integrate many of the financial analysis packages within the <code>tidyverse</code>. In the next section, the <em>“split-apply-combine”</em> framework is discussed conceptually using non-financial data and then a demonstration of the <code>tidyquant</code> package is presented to illustrate some of the key benefits to the integration of financial packages into the “tidy” ecosystem within the realm of financial analysis.</p>
+<p>All of the major finance packages work with the “xts” system, which is specifically designed for time series analysis. The system works very well. The extensible time series, “xts”, data structure was designed solely for time series analysis. The data structure is much like a numeric matrix, the only major difference being row names consisting of the date or date-time information. The advantage to “xts” objects are the ability to manage numeric data with date or date-time references. The objects can be subset or transformed to different periodicity very easily. The disadvantage is the application is very strict to numeric data, but because of its focus it manages the time series data extremely well.</p>
+<p>Much of the recent innovation in data analysis has occurred within the “tidy” ecosystem. With the entrance of the “tidyverse”, scaling analysis using the <em>“split-apply-combine”</em> framework has become easy, efficient, and core functionality. Further, advances in date and date-time functionality has enabled management of time series data within the “tibble” (“tidy” data frame) data structure. As the data science field grows, more innovative functionality will continue to be developed within the “tidy” ecosystem, much of which will be (and is already) useful to the field of financial analysis.</p>
+<p>The two systems, “xts” and the “tidyverse”, are very different on a fundamental and philosophical level. Both have advantages that are needed within the realm of financial analysis, but unfortunately the two systems do not work well together. The “xts” system is strictly numeric-based, while the “tidy” system is strictly data frame-based. Passing data between systems is difficult if not painful, and without communication between each the full potential of financial analysis within R is limited.</p>
+<p>To solve this problem, the <code>tidyquant</code> package was developed as a way to integrate many of the financial analysis packages within the “tidyverse”. In the next section, the <em>“split-apply-combine”</em> framework is discussed conceptually using non-financial data and then a demonstration of the <code>tidyquant</code> package is presented to illustrate some of the key benefits to the integration of financial packages into the “tidy” ecosystem within the realm of financial analysis.</p>
 </div>
 <div id="split-apply-combine-concepts" class="section level1">
 <h1>Split-Apply-Combine Concepts</h1>
