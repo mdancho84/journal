@@ -11,7 +11,7 @@ abstract: >
   An abstract of less than 150 words.
 preamble: >
   % Any extra latex you need in the preamble
-output: rticles::rjournal_article
+output: rticles::rjournal_article_tq
 ---
 
 ```{r setup, include=FALSE}
@@ -108,25 +108,27 @@ To solve this problem, the `tidyquant` package was developed as a way to consoli
 
 # Split-Apply-Combine Concepts
 
-The _"split-apply-combine"_ framework is discussed at length in [INSERT REF]. To summarize, the core concept is to split a data set into groups, apply functional analysis, and then recombine. The value in this approach is the framework enables scaling analyses from one group to many groups and comparing each group to each other. Rather than discuss in terms of theory, an example using the `mtcars` data set is a better illustration of the _"split-apply-combine"_ framework. 
+The _"split-apply-combine"_ framework is discussed at length in [INSERT REF]. To summarize, the core concept is to split a data set into groups, apply functional analysis, and then recombine. The value in this approach is the framework enables scaling analyses from one group to many groups and comparing each group to each other. Rather than discuss in terms of theory, an example using the `mtcars` data set is a better illustration of the _"split-apply-combine"_ framework.
 
-Start with a question:
-
-> How does engine size affect fuel consumption?
+Start with a question: How does engine size affect fuel consumption?
 
 Load the `tidyverse` and the `mtcars` data set in R.
+
 
 ```{r}
 library(tidyverse)
 data("mtcars")
 ```
 
+
 Next, view the data set. The `as_tibble` function is used to convert to the "tidy" data frame structure. The data set consists of 32 rows of data related to various automobiles. Some of the data is categorical, which can be grouped on.
+
 
 ```{r}
 mtcars <- as_tibble(mtcars)
 mtcars
 ```
+
 
 Many solutions exist to compare fuel consumption and engine size. For simplicity, the mean and standard deviation are used to characterize the relationship between number of cylinders, "cyl", and miles per gallon, "mpg". Implementing _"split-apply-combine"_ is as easy as grouping by a categorical variable and summarizing by the target measure.
 
@@ -140,7 +142,7 @@ mtcars %>%
 
 From the results, the vehicles, when grouped by "cyl", appear to have an inverse relationship between number of cylinders and miles per gallon. We can also visualize this relationship using `ggplot2`.
 
-```{r, fig.width=5.5, fig.height=4, fig.align="center"}
+```{r, fig.width=5, fig.height=4, fig.align="center"}
 mtcars %>%
     mutate(cyl = factor(cyl)) %>%
     ggplot(aes(x = cyl, y = mpg, fill = cyl)) +
@@ -226,13 +228,13 @@ sp500_stats
 
 Finally, we have the tools to visualize risk versus reward. Risk can be characterized by the standard deviation, or volatility, and reward can be characterized by average returns. A plot of MDLR versus SDDLR shows the relationship. The market tends to penalize stocks with higher standard deviations of daily log returns (SDDLR), or in other words more volatility.
 
-```{r, fig.width=5.5, fig.height=4, fig.align="center"}
+```{r, fig.width=5, fig.height=4, fig.align="center"}
 sp500_stats %>%
     filter(Observations >= 252 * 5) %>%
     ggplot(aes(x = Stdev, y = ArithmeticMean, col = (ArithmeticMean / Stdev))) +
     geom_point() +
     geom_smooth(method = "lm") +
-    labs(title = "Evaluating Risk Vs Reward for Stocks in the SP500 Index",
+    labs(title = "Evaluating Risk Vs Reward for Stocks in the SP500",
          subtitle = "Split-Apply-Combine Enables Scaling Financial Analysis",
          caption = "Looks like an inverse relationship exists between MDLR and SDDLR",
          x = "Standard Deviation of Daily Log Returns (SDDLR)",
@@ -281,7 +283,7 @@ FANG_returns
 
 Before the portfolios are generated, it makes sense to visualize and assess the performance of the individual asset returns. NFLX is the best performer, but it also makes sense to investigate risk.
 
-```{r, fig.width=5.5, fig.height=4, fig.align="center"}
+```{r, fig.width=5, fig.height=4, fig.align="center"}
 init_investment <- 10000
 FANG_wealth <- FANG_returns %>%
     mutate(wealth.index = init_investment * cumprod(1 + returns))
@@ -290,7 +292,9 @@ FANG_wealth %>%
     ggplot(aes(x = date, y = wealth.index, color = symbol)) +
     geom_line(size = 2) +
     geom_smooth(method = "loess") +
-    labs(title = "Individual Stocks: Comparing the Growth of 10K", x = "", y = "Investment Value")
+    labs(title = "Individual Stocks: Comparing the Growth of 10K", x = "", y = "Investment Value") +
+    theme_tq() +
+    scale_color_tq()
 
 ```
 
@@ -370,7 +374,7 @@ FANG_portfolio_wealth <- FANG_returns_mult %>%
 
 Next, we can visualize the performance of the various blended portfolios.
 
-``` {r, fig.width=5.5, fig.height=4, fig.align="center"}
+``` {r, fig.width=5, fig.height=4, fig.align="center"}
 FANG_portfolio_wealth  %>%
     ggplot(aes(x = date, y = wealth.index, color = factor(portfolio))) +
     geom_line(size = 2) +

@@ -164,11 +164,7 @@ discuss in terms of theory, an example using the \texttt{mtcars} data
 set is a better illustration of the \emph{``split-apply-combine''}
 framework.
 
-Start with a question:
-
-\begin{quote}
-How does engine size affect fuel consumption?
-\end{quote}
+Start with a question: How does engine size affect fuel consumption?
 
 Load the \texttt{tidyverse} and the \texttt{mtcars} data set in R.
 
@@ -465,7 +461,7 @@ sp500_stats %>%
     ggplot(aes(x = Stdev, y = ArithmeticMean, col = (ArithmeticMean / Stdev))) +
     geom_point() +
     geom_smooth(method = "lm") +
-    labs(title = "Evaluating Risk Vs Reward for Stocks in the SP500 Index",
+    labs(title = "Evaluating Risk Vs Reward for Stocks in the SP500",
          subtitle = "Split-Apply-Combine Enables Scaling Financial Analysis",
          caption = "Looks like an inverse relationship exists between MDLR and SDDLR",
          x = "Standard Deviation of Daily Log Returns (SDDLR)",
@@ -585,7 +581,9 @@ FANG_wealth %>%
     ggplot(aes(x = date, y = wealth.index, color = symbol)) +
     geom_line(size = 2) +
     geom_smooth(method = "loess") +
-    labs(title = "Individual Stocks: Comparing the Growth of 10K", x = "", y = "Investment Value")
+    labs(title = "Individual Stocks: Comparing the Growth of 10K", x = "", y = "Investment Value") +
+    theme_tq() +
+    scale_color_tq()
 \end{Sinput}
 
 
@@ -751,7 +749,7 @@ investment value of \$10,000 returns a wealth index.
 
 \begin{Schunk}
 \begin{Sinput}
-# C: Aggregate portfolio with tq_portfolio. Pass wealth.index = TRUE
+# Aggregate portfolio with tq_portfolio. Pass wealth.index = TRUE
 init_investment <- 10000
 FANG_portfolio_wealth <- FANG_returns_mult %>%
     tq_portfolio(assets_col = symbol, returns_col = returns,
@@ -831,4 +829,5 @@ Business Science\\
 \\
 }
 \href{mailto:dvaughan@business-science.io}{\nolinkurl{dvaughan@business-science.io}}
+
 
