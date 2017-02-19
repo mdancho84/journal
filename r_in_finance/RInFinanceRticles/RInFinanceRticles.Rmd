@@ -553,4 +553,6 @@ FANG_portfolio_wealth %>%
 
 The _split-apply-combine_ framework presents an opportunity for progress in the realm of financial analysis due to the scale at which analysis can now be performed. Portfolio analysis is especially interesting because as the number of components and the number of portfolio blend variations increase, the number of potential portfolio combinations become infinite. Yet, with the scaling capabilities within the "tidy" ecosystem, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. The work is not complete, but, as innovation continues, financial analysis will benefit from both speed and scale. 
 
+\pagebreak
+
 \bibliography{RJreferences}
