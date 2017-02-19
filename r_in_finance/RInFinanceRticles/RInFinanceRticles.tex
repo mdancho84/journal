@@ -612,7 +612,8 @@ First, collect the data for the ``FANG'' stocks.
 \begin{Sinput}
 FANG <- c("FB", "AMZN", "GOOG", "NFLX") %>%
     tq_get(get = "stock.prices")
-slice(FANG, 1:6)
+head(FANG)
+dim(FANG)
 \end{Sinput}
 \end{Schunk}
 
@@ -628,6 +629,8 @@ FB & 2012-05-24 & 32.95 & 33.21 & 31.77 & 33.03 & 50237200 & 33.03\\
 FB & 2012-05-25 & 32.90 & 32.95 & 31.11 & 31.91 & 37149800 & 31.91\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 8849 8
 
 \hspace{20 mm}
 
@@ -649,6 +652,7 @@ FANG_returns <- FANG %>%
                  period = "monthly",
                  col_rename = "returns")
 slice(FANG_returns, 1:2)
+dim(FANG_returns)
 \end{Sinput}
 \end{Schunk}
 
@@ -667,6 +671,8 @@ NFLX & 2013-01-31 & 0.7958918\\
 NFLX & 2013-02-28 & 0.1382232\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 192 3
 
 \hspace{20 mm}
 
@@ -767,6 +773,7 @@ groups that will be evaluated.
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
 slice(FANG_returns_mult, 1:2)
+dim(FANG_returns_mult)
 \end{Sinput}
 \end{Schunk}
 
@@ -785,6 +792,8 @@ portfolio & symbol & date & returns\\
 4 & FB & 2013-02-28 & -0.1204003\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 768 4
 
 \hspace{20 mm}
 

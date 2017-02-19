@@ -322,12 +322,14 @@ First, collect the data for the "FANG" stocks.
 FANG <- c("FB", "AMZN", "GOOG", "NFLX") %>%
     tq_get(get = "stock.prices")
 head(FANG)
+dim(FANG)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 FANG <- c("FB", "AMZN", "GOOG", "NFLX") %>%
     tq_get(get = "stock.prices")
 kable(head(FANG), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG)
 ```
 
 \hspace{20 mm}
@@ -344,6 +346,7 @@ FANG_returns <- FANG %>%
                  period = "monthly",
                  col_rename = "returns")
 slice(FANG_returns, 1:2)
+dim(FANG_returns)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
@@ -356,6 +359,7 @@ FANG_returns <- FANG %>%
                  period = "monthly",
                  col_rename = "returns")
 kable(slice(FANG_returns, 1:2), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG_returns)
 ```
 
 \hspace{20 mm}
@@ -416,12 +420,14 @@ Use `tq_repeat_df` to repeat `n = 4` times. This function extends the data frame
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
 slice(FANG_returns_mult, 1:2)
+dim(FANG_returns_mult)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
 kable(slice(FANG_returns_mult, 1:2), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG_returns_mult)
 ```
 
 \hspace{20 mm}
