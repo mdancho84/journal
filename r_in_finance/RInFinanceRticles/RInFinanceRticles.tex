@@ -11,33 +11,33 @@ followed two separate yet innovative paths resulting in two different
 but important systems, ``xts'' and ``tidyverse''. Because of the
 separation in development, the two systems are difficult to use
 together, which limits the full potential of financial analysis within
-R. The \texttt{tidyquant} package solves this problem by integrating
-best financial analysis packages in the ``xts'' system with the ``tidy''
-ecosystem, which unlocks the benefits of the
-\emph{``split-apply-combine''} framework and enables scaling financial
-analyses.
+R. The \texttt{tidyquant} package is an attempt to solve this problem by
+integrating the best financial analysis packages in the ``xts'' world
+with the ``tidy'' ecosystem, unlocking the benefits of the
+\emph{split-apply-combine} framework and enabling the ability to scale
+financial analyses.
 
 Two usage cases are discussed to illustrate the potential. The first
-example uses the scaling capabilities to provide an answer to how the
+example uses the scaling capabilities to provide an answer for how the
 ``market'' values risk versus reward. The second example evaluates the
 performance of multiple portfolios using weighted blends. These examples
 just scratch the surface of the full potential as technology develops,
-and the future possibilities are briefly addressed.
+and future possibilities are briefly addressed.
 }
 
 \section{Status of Financial Analysis Tools in
 R}\label{status-of-financial-analysis-tools-in-r}
 
 The R programming language has seen immense growth in both popularity
-and tools over the past several years primarily driven by the open
-source nature of the R language and innovation in the field of data
+and tools over the past several years primarily driven by the
+open-source nature of the R language and innovation in the field of data
 science. The sub-segment of financial analysis in R is no different.
 \href{https://timelyportfolio.github.io/rCharts_time_series/history.html}{TimelyPortfolio}
-maintains a timeline of the major advances in R time series plotting,
+maintains a timeline of the major advances in R time series graphics,
 which highlights the inception of several of the most influential R
-financial and time series packages. Several of the influential packages
-are worth describing in more detail as these create much of the
-foundation of R in Finance currently.
+financial and time series packages. Several packages are worth
+describing in more detail as these create much of the current foundation
+of R in Finance.
 
 \begin{figure}[htbp]
   \centering
@@ -46,72 +46,70 @@ foundation of R in Finance currently.
 
 \subsection{quantmod / TTR}\label{quantmod-ttr}
 
-The \emph{``Quantitative Financial Modelling \& Trading Framework for
-R''} or \texttt{quantmod} package and the \emph{``Technical Trading
-Rules''} or \texttt{TTR} package include mechanisms to retrieve,
-compute, and visualize financial data using the most popular technical
-trading rules.
+The \emph{Quantitative Financial Modelling \& Trading Framework for R}
+(\texttt{quantmod}) package and the \emph{Technical Trading Rules}
+(\texttt{TTR}) package include mechanisms to retrieve, compute, and
+visualize financial data using the most popular technical trading rules.
 
 \subsection{xts / zoo}\label{xts-zoo}
 
-The \emph{``Extensible Time Series''} or \texttt{xts} package along with
-the \texttt{zoo} package includes mechanisms for the handling of time
-series data. Most importantly, the \texttt{xts} package implemented a
-cross-package method for handling the various time-series data
+The \emph{Extensible Time Series} (\texttt{xts}) package along with the
+\texttt{zoo} package include mechanisms for the handling of time series
+data. Most importantly, the \texttt{xts} package implemented a
+cross-package method for handling the various time series data
 structures, in the process solving a major shortcoming by managing
 \emph{all major R time series objects}
-\footnote{At least the following time series data objects exist in R to solve general and specific needs: `fts`, `its`, `irts`, `timeSeries`, `ti`, `ts`, `mts`, `zoo`, and `xts`. The sheer volume of options results in a complex decision process to determine which to use. The `xts` package manages this complexity by providing one object class, `xts`, that consolidates the functionality of these options into one data type.}
-under one object class, \texttt{xts}.
+\footnote{At least the following time series data objects exist in R to solve general and specific needs: `fts`, `its`, `irts`, `timeSeries`, `ti`, `ts`, `mts`, `zoo`, and `xts`. The sheer volume of options results in a complex decision process to determine which to use.}
+under one class, \texttt{xts}.
 
 \subsection{PerformanceAnalytics}\label{performanceanalytics}
 
 The \texttt{PerformanceAnalytics} package includes a large collection of
 econometric functions for financial performance analysis, many of which
-are described in \emph{``Practical Portfolio Performance Measurement and
-Attribution''} by Carl Bacon \citep{Bacon2004} . These functions enable
+are described in \emph{Practical Portfolio Performance Measurement and
+Attribution} by Carl Bacon \citep{Bacon2004} . These functions enable
 analysis of individual asset and portfolio (the weighted aggregation of
 multiple assets) returns using popular statistical methods for measuring
 performance.
 
 \section{New Tools: tidyverse}\label{new-tools-tidyverse}
 
-In parallel with the progression within the R in Finance community,
+In parallel with the progression in the R in Finance community,
 developers at \emph{RStudio} have been developing useful tools for data
 science in R, namely the ``tidyverse''. The ``tidyverse'' or ``tidy''
 ecosystem is a collection of packages that fundamentally and
 philosophically work together utilizing ``tidy'' data, which is defined
-in \emph{``Tidy Data''} \citep{tidy-data}. Further, the ``tidyverse''
+in \emph{Tidy Data} \citep{tidy-data}. Further, the ``tidyverse''
 packages and the data analysis workflow are documented in the online
-text, \emph{``R for Data Science''} \citep{R4DS2017}, which is the de
-facto manual for data scientists beginning with the R programming
-language. The ``tidyverse'' includes several packages worth describing
-in more detail.
+text, \emph{R for Data Science} \citep{R4DS2017}, which is the de facto
+manual for data scientists beginning with the R programming language.
+The ``tidyverse'' includes several packages worth describing in more
+detail.
 
 \subsection{dplyr / tidyr}\label{dplyr-tidyr}
 
 The \texttt{dplyr} and \texttt{tidyr} packages provide tools to clean
-and manipulate data using the \emph{``split-apply-combine''} framework
-popularized by Hadley Wickham in \emph{``The Split-Apply-Combine
-Strategy for Data Analysis''} \citep{plyr}. The major advances were
-threefold. First, the packages simplified and made consistent many of
-the most common data manipulation and summarization tasks in R. Second,
-the packages enable the \emph{``split-apply-combine''} framework on
+and manipulate data using the \emph{split-apply-combine} framework
+popularized by Hadley Wickham in \emph{The Split-Apply-Combine Strategy
+for Data Analysis} \citep{plyr}. The major advances were threefold.
+First, the packages simplified and made consistent many of the most
+common data manipulation and summarization tasks in R. Second, the
+packages enable the \emph{split-apply-combine} framework to work with
 grouped data sets. Third, the packages incorporated the use of the pipe
-(\texttt{\%\textgreater{}\%}) from the \texttt{magrittr} package
-enabling the functional verbs to follow an easy, efficient, and
+(\texttt{\%\textgreater{}\%}) from the \texttt{magrittr} package,
+enabling functional verbs to follow an easy, efficient, and
 human-readable workflow.
 
 \subsection{purrr}\label{purrr}
 
 The \texttt{purrr} package provides tools for applying functions to data
-frames. Similar to the traditional, \texttt{apply} function in base R,
-the \texttt{map} function enables ``mapping''" functions row-wise within
+frames. Similar to the traditional \texttt{apply} function in base R,
+the \texttt{map} function enables ``mapping'' functions row-wise within
 a data frame. The major advance is the ability to scale analysis. An
 analysis can be performed with ``nested'' data frames allowing users to
-apply functions across many, independent data sets, which is a common
-task in data science. Further, the resulting data frame is ``tidy'',
-meaning each analysis result is kept alongside the data that generated
-it.
+apply functions across many independent data sets, a common task in data
+science. Further, the resulting data frame is ``tidy'', meaning each
+analysis result is kept alongside the data that generated it.
 
 \subsection{tibble}\label{tibble}
 
@@ -123,20 +121,20 @@ object by providing useful tools for creating and coercing objects to
 
 The \texttt{ggplot2} package provides mechanisms for creating complex
 visualizations using a layered approach called the ``grammar of
-graphics'', which is discussed in \emph{``A Layered Grammar of
-Graphics''} \citep{layered-grammar}. The \texttt{ggplot2} package is the
-primary package for creating static graphics in the ``tidy'' ecosystem.
+graphics'', which is discussed in \emph{A Layered Grammar of Graphics}
+\citep{layered-grammar}. The \texttt{ggplot2} package is the primary
+package for creating static graphics in the ``tidy'' ecosystem.
 
 \subsection{lubridate}\label{lubridate}
 
 The \texttt{lubridate} package includes functions to manage date and
-date-time objects in R, which is discussed in \emph{``Dates and Times
-Made Easy with lubridate''} \citep{lubridate}. The combination of using
-\texttt{lubridate} with \texttt{dplyr} enables coercing character class
-to date and date-time, filtering and subsetting on dates, and many more
-complex tasks that are essential to financial analysis. Further,
-combining \texttt{lubridate} with \texttt{ggplot2} enables graphical
-visualization using dates and date-times.
+date-time objects in R, which is discussed in \emph{Dates and Times Made
+Easy with lubridate} \citep{lubridate}. The combination of
+\texttt{lubridate} with \texttt{dplyr} enables easy coercion of
+character class to date and date-time, filtering and subsetting on
+dates, and many more complex tasks that are essential to financial
+analysis. Further, combining \texttt{lubridate} with \texttt{ggplot2}
+enables graphical visualization using dates and date-times.
 
 \section{Divergent Philosophies, Each with
 Advantages}\label{divergent-philosophies-each-with-advantages}
@@ -144,23 +142,22 @@ Advantages}\label{divergent-philosophies-each-with-advantages}
 All of the major financial packages work within the ``xts'' system,
 which is specifically designed for time series analysis. The system
 works very well. The extensible time series, ``xts'', data structure is
-much like a numeric matrix, the only major difference being row names
-consisting of the date or date-time information. The advantage of the
-``xts'' system is the ability to manage numeric data with date or
-date-time references. The objects can be subset or transformed to
-different periodicity very easily. The disadvantage is the application
-is very strict to numeric data, but because of its focus it manages the
-numeric, time-based data extremely well.
+much like a numeric matrix, the only major visible difference being row
+names consisting of the date or date-time information. The objects can
+be subset or transformed to different periodicity very easily. The
+disadvantage is that the application is strict to numeric data, but
+because of its focus it manages the numeric time-based data extremely
+well.
 
 Much of the recent innovation in data analysis has occurred within the
 ``tidy'' ecosystem. With the entrance of the ``tidyverse'', scaling
-analysis using the \emph{``split-apply-combine''} framework has become
-easy, efficient, and core functionality. Further, advances in date and
-date-time functionality has enabled management of time series data
-within the ``tibble'' (``tidy'' data frame) data structure. As the data
-science field grows, more innovative functionality will continue to be
-developed within the ``tidy'' ecosystem, much of which will be (and is
-already) useful to the field of financial analysis.
+analysis using the \emph{split-apply-combine} framework has become easy,
+efficient, and core functionality. Further, advances in date and
+date-time functionality have enabled management of time series data
+within the ``tibble'' data structure. As the data science field grows,
+more innovative functionality will continue to be developed within the
+``tidy'' ecosystem, much of which will be (and is already) useful to the
+field of financial analysis.
 
 The two systems, ``xts'' and the ``tidyverse'', are very different on a
 fundamental and philosophical level. Both have advantages that are
@@ -173,46 +170,46 @@ within R is limited.
 
 To solve this problem, the \texttt{tidyquant} package was developed as a
 way to integrate many of the ``xts'' based financial analysis packages
-within the ``tidyverse''. The central idea is to integrate the two
-systems enabling the user to gain the benefits of both systems. The
-\texttt{tidyquant} package works with ``tidy'' data frame input and
-output, and as a result fits seamlessly within the ``tidy'' ecosystem
-allowing for analysis to follow the data science workflow discussed in
-detail in \emph{``R for Data Science''} \citep{R4DS2017}. Internally,
+into the ``tidyverse''. The central motivation behind the integration is
+to enable the user to gain the benefits of both systems. The
+\texttt{tidyquant} package works with ``tidy'' input and output, and as
+a result fits seamlessly within the ``tidy'' ecosystem allowing for
+analysis to follow the data science workflow discussed in detail in
+\emph{R for Data Science} \citep{R4DS2017}. Internally,
 \texttt{tidyquant} leverages the ``xts'' system as the engine to perform
 financial computations. This enables almost all of the functionality of
 \texttt{quantmod}, \texttt{TTR}, \texttt{PerformanceAnalytics},
 \texttt{xts} and \texttt{zoo} to be used integrally (without switching
 back and forth) within the ``tidy'' ecosystem. The primary benefit of
 this integration is the ability to implement the
-\emph{``split-apply-combine''} framework to scale complex analysis.
+\emph{split-apply-combine} framework to scale complex analysis.
 
-In the next section, the \emph{``split-apply-combine''} framework is
+In the next section, the \emph{split-apply-combine} framework is
 discussed conceptually using non-financial data and then a demonstration
 of the \texttt{tidyquant} package is presented to illustrate some of the
 key benefits of the integration of ``xts'' based financial packages into
-the ``tidy'' ecosystem within the realm of financial analysis.
+the ``tidy'' ecosystem.
 
 \section{Split-Apply-Combine, The
 Concept}\label{split-apply-combine-the-concept}
 
-The \emph{``split-apply-combine''} framework is described in \emph{``The
-Split-Apply-Combine Strategy for Data Analysis''} \citep{plyr}. To
+The \emph{split-apply-combine} framework is described in \emph{The
+Split-Apply-Combine Strategy for Data Analysis} \citep{plyr}. To
 summarize, the core concept is to split a data set into groups, apply
 functions to independent groups, and then recombine the results. The
-value in this approach is the framework enables scaling analysis from
-one group to many groups and comparing each group to each other.
+value in this approach is that the framework enables scaling analyses
+from one group to many groups and comparing each group to each other.
 
-A simple example using the \texttt{mtcars} data set illustrates the
-\emph{``split-apply-combine''} framework. The \texttt{mtcars} data set
-includes the various attributes for 32 vehicles along with the fuel
-efficiency (MPG) of each vehicle. Start with a question: \emph{How does
-engine size affect fuel consumption?}
+A simple example using the \texttt{mtcars} data set illustrates this
+framework. The \texttt{mtcars} data set includes the various attributes
+for 32 vehicles along with the fuel efficiency (MPG) of each vehicle.
 
-Load the \texttt{tidyverse} and the \texttt{mtcars} data set in R.
+Start with a question: \emph{How does engine size affect fuel
+consumption?}
 
 \begin{Schunk}
 \begin{Sinput}
+# Load the tidyverse and the mtcars data set in R.
 library(tidyverse)
 data("mtcars")
 \end{Sinput}
@@ -220,10 +217,10 @@ data("mtcars")
 
 Next, view the data set. The \texttt{as\_tibble} function is used to
 convert to the ``tidy'' data frame structure. The data set consists of
-12 columns (features) and 32 rows (observations) of related to various
-automobiles. Fortunately, the frame of the problem statement narrows the
-analysis to two variables: ``mpg'', continuous numeric data describing
-the fuel efficiency of each vehicle, and ``cyl'', discrete numeric data
+12 columns (features) and 32 rows (observations) related to various
+automobiles. Fortunately, the frame of the question narrows the analysis
+to two variables: ``mpg'', continuous numeric data describing the fuel
+efficiency of each vehicle, and ``cyl'', discrete numeric data
 indicating number of engine cylinders for each vehicle. The ``cyl'' data
 can be grouped on to keep like observations together.
 
@@ -253,10 +250,10 @@ Valiant & 18.1 & 6 & 225 & 105 & 2.76 & 3.460 & 20.22 & 1 & 0 & 3 & 1\\
 
 Many solutions exist to compare fuel consumption and engine size. For
 simplicity, the mean and standard deviation are used to characterize the
-relationship between number of cylinders, ``cyl'', and miles per gallon,
-``mpg''. Implementing \emph{``split-apply-combine''} is as easy as
-grouping by a categorical variable and summarizing by the target
-measure. In this case, the categorical variable is the ``cyl'' variable.
+relationship between number of cylinders and miles per gallon.
+Implementing \emph{split-apply-combine} is as easy as grouping by a
+categorical variable and summarizing by the target measure. In this
+case, the categorical variable is the ``cyl'' variable.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -292,7 +289,7 @@ mtcars %>%
     geom_boxplot() +
     labs(title = "Summarizing Relationships using Split-Apply-Combine",
          subtitle = "Inverse Relationship between Engine Size and Fuel Efficiency",
-         x = "Engine Size (No. of Cylinders)",
+         x = "Engine Size (# of Cylinders)",
          y = "Fuel Efficiency (MPG)")
 \end{Sinput}
 
@@ -301,15 +298,15 @@ mtcars %>%
 
 \end{Schunk}
 
-The \emph{``split-apply-combine''} framework is very useful to solve a
-wide range of complex problems. In the next section, examples are
-presented to illustrate the power of unlocking the framework along with
-the data science workflow tools within financial analysis applications.
+The \emph{split-apply-combine} framework is used to solve a wide range
+of complex problems. In the next section, examples are presented to
+illustrate the power of unlocking the framework combined with data
+science workflow tools within financial analysis applications.
 
 \section{Split-Apply-Combine, Applications in
 Finance}\label{split-apply-combine-applications-in-finance}
 
-The R financial analysis packages are difficult or impossible to use
+The financial analysis packages are difficult or impossible to use
 within the ``tidy'' ecosystem. A new tool is needed, \texttt{tidyquant}.
 The \texttt{tidyquant} package has one major advance: it integrates the
 ``xts'' based financial packages with the ``tidyverse'' to enable the
@@ -325,9 +322,10 @@ Reward}\label{example-1-evaluating-risk-vs-reward}
 Financial analysis is almost always a trade off between risk and reward.
 Reward is measured by growth of an investment. Risk is typically
 associated with volatility. Often when beginning an analysis, one wishes
-to understand the components of a ``market'' basket of stocks on the
-basis of this risk-reward trade off in order to screen investments.
-Start with a question: \emph{How does the ``market'' value risk versus
+to understand the components of a market basket of stocks on the basis
+of this risk-reward trade off in order to screen investments.
+
+Start with a question: \emph{How does the market value risk versus
 reward?}
 
 This question is answerable by comparing the risk and reward
@@ -342,7 +340,7 @@ the large set of returns has statistical properties that can be
 measured. To simplify the question, the average and standard deviation
 of the returns can be used as a general proxy of risk versus reward.
 When pooled together, the stocks can thus be compared to expose general
-performance trends withing the ``market''.
+performance trends within the market.
 \footnote{Using the mean and standard deviation of stock returns has roots in Brownian motion and is known as the Stochastic Process, which is often used in Monte Carlo simulation to predict the range of future returns within a confidence interval based on the properties of the past returns. }
 
 To start, load \texttt{tidyquant}, which loads all of the packages
@@ -357,15 +355,15 @@ library(tidyquant)
 
 Next, collect some financial data. The question implies that a large
 sample of stock data is needed to evaluate how performance and risk is
-valued within the ``market''. The SP500 index is a good place to start.
-\texttt{tidyquant} includes a function, \texttt{tq\_index}, which
+valued within the ``market''. The S\&P 500 index is a good place to
+start. \texttt{tidyquant} includes a function, \texttt{tq\_index}, which
 returns the stock symbols and company names for every stock within an
 index.
 
 \begin{Schunk}
 \begin{Sinput}
 sp500 <- tq_index("SP500")
-sp500
+head(sp500)
 \end{Sinput}
 \end{Schunk}
 
@@ -384,8 +382,8 @@ AYI & ACUITY BRANDS\\
 
 \hspace{20 mm}
 
-Next, we need the historical stock prices for each stock within the
-SP500 index. The stock prices are easy to retrieve at scale using the
+Next, we need the historical stock prices for each stock within the S\&P
+500 index. The stock prices are easy to retrieve at scale using the
 function, \texttt{tq\_get}, with the ``get'' option,
 \texttt{get\ =\ "stock.prices"}. \texttt{tq\_get} is a wrapper for
 \texttt{quantmod::getSymbols}, which enables passing the underlying
@@ -395,18 +393,18 @@ vector of stock symbols, or a data frame with stock symbols in the first
 column. The latter is passed to \texttt{tq\_get} using the pipe
 (\texttt{\%\textgreater{}\%}). The function may take a few minutes to
 run because it is downloading the past ten years of daily open, high,
-low, close, volume, and adjusted stock prices for the entire SP500 index
-into one ``tidy'' data frame. Reviewing the results indicates that the
-prices were retrieved in entirety. The resulting ``tibble'' has
+low, close, volume, and adjusted stock prices for the entire S\&P 500
+index into one ``tidy'' data frame. Reviewing the results indicates that
+the prices were retrieved in entirety. The resulting ``tibble'' has
 1,205,845 rows and 502 unique symbols.
 
 \begin{Schunk}
 \begin{Sinput}
-stock_prices <- sp500 %>%
+sp500_stock_prices <- sp500 %>%
     tq_get(get  = "stock.prices", 
            from = "2007-01-01", 
            to   = "2017-01-01")
-sp500_stock_prices
+head(sp500_stock_prices)
 \end{Sinput}
 \end{Schunk}
 
@@ -425,7 +423,7 @@ MMM & 3M & 2007-01-10 & 77.31 & 77.96 & 77.04 & 77.85 & 1787500 & 59.99468\\
 
 \hspace{20 mm}
 
-Next, the \emph{``split-apply-combine''} framework is used to group the
+Next, the \emph{split-apply-combine} framework is used to group the
 prices by stock symbol and to calculate the logarithmic daily returns.
 The transform is applied using \texttt{tq\_transform}, which is used in
 situations where periodicity changes (or can change). The
@@ -444,7 +442,7 @@ sp500_returns <- sp500_stock_prices %>%
     group_by(symbol) %>%
     tq_transform(ohlc_fun = Ad, transform_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
-sp500_returns
+head(sp500_returns)
 \end{Sinput}
 \end{Schunk}
 
@@ -465,7 +463,7 @@ MMM & 2007-01-10 & 0.0021860\\
 
 Next, the mean and standard deviation of the daily log returns are used
 to evaluate and compare the stocks. The easiest way is to use
-\texttt{tq\_performance}, which enables applying the
+\texttt{tq\_performance}, which applies the
 \texttt{PerformanceAnalytics} performance functions to ``tidy'' data
 frames of asset or portfolio returns. The \texttt{table.Stats} function
 returns the arithmetic mean and standard deviation along with a number
@@ -475,7 +473,7 @@ of other useful statistics that characterize the returns.
 \begin{Sinput}
 sp500_stats <- sp500_returns %>%
     tq_performance(Ra = dlr, performance_fun = table.Stats, ci = 0.95, digits = 6) 
-sp500_stats
+head(sp500_stats[ ,1:5])
 \end{Sinput}
 \end{Schunk}
 
@@ -497,7 +495,7 @@ AYI & 0.000701 & 0.000420 & 6.011008 & -0.000225\\
 Finally, we have the data needed to visualize risk versus reward. A plot
 of the mean daily log returns (MDLR) versus the standard deviation of
 daily log returns (SDDLR) shows the relationship. Note that observations
-(stocks) with fewer than five years or trading days (5 years x 252 trade
+(stocks) with fewer than five years of trading days (5 years x 252 trade
 days per year) are removed from the visualization to yield a long-run
 perspective.
 
@@ -509,8 +507,7 @@ sp500_stats %>%
     geom_point(alpha = 0.5, col = "steelblue") +
     geom_smooth(method = "lm") +
     labs(title = "Evaluating Risk Vs Reward for Stocks in the SP500",
-         subtitle = "Split-Apply-Combine Enables Scaling Financial Analysis",
-         caption = "An inverse trend between volatility (SDDLR) and returns (MDLR)",
+         subtitle = "An inverse trend between volatility (SDDLR) and returns (MDLR)",
          x = "Standard Deviation of Daily Log Returns (SDDLR)",
          y = "Arithmetic Mean of Daily Log Returns (MDLR)") +
     theme_tq()
@@ -535,7 +532,9 @@ sp500_stats %>%
     filter(Observations >= 252 * 5,
            Stdev <= 0.02,
            ArithmeticMean >= 0.0005) %>%
-    arrange(desc(ArithmeticMean))
+    arrange(desc(ArithmeticMean)) %>%
+    select(1:5) %>%
+    head()
 \end{Sinput}
 \end{Schunk}
 
@@ -571,11 +570,13 @@ weighted blends.
 Throughout the past half decade, the FANG stocks have experienced a
 unique combination of high returns and high volatility, making the FANG
 stocks a good example to use in a blended portfolio that reduces
-downside risk but yields high returns. Start with a question: \emph{What
-portfolio blends reduce downside risk while maximizing return?}
+downside risk but yields high returns.
+
+Start with a question: \emph{What portfolio blends reduce downside risk
+while maximizing return?}
 
 Several portfolio blends will be evaluated to see the historical effect
-on returns over a since 2013:
+on returns since 2013:
 \footnote{2013 was the first full year of trading data for FB. Portfolio aggregation prior to 2013 cannot be analyzed with FB.}
 
 \begin{itemize}
@@ -596,7 +597,7 @@ First, collect the data for the ``FANG'' stocks.
 \begin{Sinput}
 FANG <- c("FB", "AMZN", "GOOG", "NFLX") %>%
     tq_get(get = "stock.prices")
-FANG
+head(FANG)
 \end{Sinput}
 \end{Schunk}
 
@@ -615,12 +616,12 @@ FB & 2012-05-25 & 32.90 & 32.95 & 31.11 & 31.91 & 37149800 & 31.91\\
 
 \hspace{20 mm}
 
-Next, transform to monthly returns using the
-\emph{``split-apply-combine''} framework. Use \texttt{group\_by} to
-group on the ``symbol'' column, and \texttt{tq\_transform} to transform
-the adjusted prices to monthly arithmetic returns. Note that ``FB'' was
-actively traded for a full year beginning in 2013, so it makes sense to
-compare the investments since then.
+Next, transform to monthly returns using the \emph{split-apply-combine}
+framework. Use \texttt{group\_by} to group on the ``symbol'' column, and
+\texttt{tq\_transform} to transform the adjusted prices to monthly
+arithmetic returns. Note that ``FB'' was only actively traded for a full
+year beginning in 2013, so it makes sense to compare the investments
+since then.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -632,7 +633,7 @@ FANG_returns <- FANG %>%
                  transform_fun = periodReturn,
                  period = "monthly",
                  col_rename = "returns")
-FANG_returns
+head(FANG_returns)
 \end{Sinput}
 \end{Schunk}
 
@@ -687,7 +688,7 @@ FANG_wealth %>%
 Because of the volatility, the risk should be evaluated as well. One
 popular method to measure risk is using value at risk (VaR). VaR
 measures the worst expected loss over a given time interval under normal
-market conditions at a given confidence level \citep{Bacon2004}.
+market conditions, at a given confidence level \citep{Bacon2004}.
 Implementing VaR can be done using \texttt{tq\_performance} with the
 \texttt{PerformanceAnalytics} function, \texttt{VaR}, to estimate risk
 measures across the FANG stocks. While NFLX and AMZN returns are
@@ -739,7 +740,7 @@ Weighted portfolio aggregation involves three steps:
 returns}\label{step-1-make-a-portfolio-by-repeating-the-stock-returns}
 
 Use \texttt{tq\_repeat\_df} to repeat \texttt{n\ =\ 4} times. This
-function grows the data frame row-wise, adding an index column named
+function extends the data frame row-wise, adding an index column named
 ``portfolio'' and grouping by ``portfolio''. We now have four portfolio
 groups that will be evaluated.
 
@@ -747,7 +748,7 @@ groups that will be evaluated.
 \begin{Sinput}
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
-FANG_returns_mult
+head(FANG_returns_mult)
 \end{Sinput}
 \end{Schunk}
 
@@ -901,7 +902,9 @@ portfolio & VaR.monthly\\
 The two tables below summarize the results of the individual and
 portfolio analyses, respectively. The Portfolio 1 blend is an attractive
 combination of growth with lower risk: over 5.1X return with over a 1\%
-decrease in the VaR of both NFLX and AMZN.
+decrease in the VaR of both NFLX and AMZN. To further optimize, one
+could run algorithms to identify the ``best'' minimum variance
+portfolio.
 
 \hspace{20 mm}
 
@@ -933,19 +936,19 @@ portfolio & value.end & VaR.monthly\\
 
 \section{Future Possibilities}\label{future-possibilities}
 
-The \emph{``split-apply-combine''} framework presents an opportunity for
+The \emph{split-apply-combine} framework presents an opportunity for
 progress in the realm of financial analysis due to the scale at which
 analysis can now be performed. Portfolio analysis is especially
 interesting because as the number of components and the number of
-portfolio blend variations increase, the number of portfolio
+portfolio blend variations increase, the number of potential portfolio
 combinations become infinite. Yet, with the scaling capabilities within
 the ``tidy'' ecosystem, the vast array of possibilities becomes limited
 only by the data storage and processing capabilities of the computers on
 which the computations are performed. With advances in cloud technology,
-parallel processing technology, and optimization algorithms, the tools
-are available to scale analyses to terabytes worth of financial data in
-real time. The work is not complete, but, as innovation continues in the
-realm of data science, the realm of financial analysis will benefit in
+parallel processing, and optimization algorithms, the tools are
+available to scale analyses to terabytes worth of financial data in real
+time. The work is not complete, but, as innovation continues in the
+realm of data science, the realm of financial analysis will benefit with
 scale and speed.
 
 \bibliography{RJreferences}
