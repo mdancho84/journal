@@ -9,9 +9,9 @@ author:
     affiliation: Business Science
     email:  dvaughan@business-science.io
 abstract: >
-  Financial analysis and data science in the R programming language have followed two separate yet innovative paths resulting in two different but important systems, "xts" and "tidyverse". Because of the separation in development, the two systems are difficult to use together, which limits the full potential of financial analysis within R. The `tidyquant` package is an attempt to solve this problem by integrating the best financial analysis packages in the "xts" world with the "tidy" ecosystem, unlocking the benefits of the _split-apply-combine_ framework and enabling the ability to scale financial analyses. 
+  Financial analysis and data science in the R programming language have followed two separate yet innovative paths resulting in two different but important systems, "xts" and "tidyverse". The "xts" system has advantages with the management of financial data, while the "tidyverse" has advantages with scaling using the _split-apply-combine_ framework. Because of the separation in development, the two systems are difficult to use together, which limits the full potential of financial analysis within R. The `tidyquant` packages solves this problem by integrating several of the best financial analysis packages with the "tidy" ecosystem, in the process unlocking the benefits of the _split-apply-combine_ framework.
 
-    Two usage cases are discussed to illustrate the potential. The first example uses the scaling capabilities to provide an answer for how the "market" values risk versus reward. The second example evaluates the performance of multiple portfolios using weighted blends. These examples just scratch the surface of the full potential as technology develops, and future possibilities are briefly addressed. 
+    Two usage cases are discussed to illustrate the potential. The first example uses the scaling capabilities to provide an answer for how the "market" values risk versus reward. The second example evaluates methods to scale the performance analysis of multiple portfolios using combinations of weighted blends. These examples just scratch the surface of the full potential as technology develops, and future possibilities are briefly addressed. 
 preamble: >
 output: rticles::rjournal_article_tq
 ---
@@ -63,6 +63,11 @@ The `PerformanceAnalytics` package includes a large collection of econometric fu
 
 In parallel with the progression in the R in Finance community, developers at _RStudio_ have been developing useful tools for data science in R, namely the "tidyverse". The "tidyverse" or "tidy" ecosystem is a collection of packages that fundamentally and philosophically work together utilizing "tidy" data, which is defined in _Tidy Data_ \citep{tidy-data}. Further, the "tidyverse" packages and the data analysis workflow are documented in the online text, _R for Data Science_ \citep{R4DS2017}, which is the de facto manual for data scientists beginning with the R programming language. The "tidyverse" includes several packages worth describing in more detail.
 
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=12cm, height=8cm]{img/tidyverse}
+\end{figure}
+
 ## dplyr / tidyr
 
 The `dplyr` and `tidyr` packages provide tools to clean and manipulate data using the _split-apply-combine_ framework popularized by Hadley Wickham in _The Split-Apply-Combine Strategy for Data Analysis_ \citep{plyr}. The major advances were threefold. First, the packages simplified and made consistent many of the most common data manipulation and summarization tasks in R. Second, the packages enable the _split-apply-combine_ framework to work with grouped data sets. Third, the packages incorporated the use of the pipe (`%>%`) from the `magrittr` package, enabling functional verbs to follow an easy, efficient, and human-readable workflow. 
@@ -94,7 +99,7 @@ The two systems, "xts" and the "tidyverse", are very different on a fundamental 
 
 To solve this problem, the `tidyquant` package was developed as a way to integrate many of the "xts" based financial analysis packages into the "tidyverse". The central motivation behind the integration is to enable the user to gain the benefits of both systems. The `tidyquant` package works with "tidy" input and output, and as a result fits seamlessly within the "tidy" ecosystem allowing for analysis to follow the data science workflow discussed in detail in _R for Data Science_ \citep{R4DS2017}. Internally, `tidyquant` leverages the "xts" system as the engine to perform financial computations. This enables almost all of the functionality of `quantmod`, `TTR`, `PerformanceAnalytics`, `xts` and `zoo` to be used integrally (without switching back and forth) within the "tidy" ecosystem. The primary benefit of this integration is the ability to implement the _split-apply-combine_ framework to scale complex analysis. 
 
-In the next section, the _split-apply-combine_ framework is discussed conceptually using non-financial data and then a demonstration of the `tidyquant` package is presented to illustrate some of the key benefits of the integration of "xts" based financial packages into the "tidy" ecosystem.
+In the next section, the _split-apply-combine_ framework is discussed using non-financial data, followed by a demonstration of the `tidyquant` package to illustrate some of its key benefits within the realm of financial analysis. 
 
 # Split-Apply-Combine, The Concept
 
@@ -191,10 +196,12 @@ Next, collect some financial data. The question implies that a large sample of s
 ```{r, eval = FALSE}
 sp500 <- tq_index("SP500")
 head(sp500)
+dim(sp500)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 kable(head(sp500), format = "latex", align = 'c', booktabs = TRUE)
+dim(sp500)
 ```
 
 \hspace{20 mm}
@@ -209,10 +216,12 @@ sp500_stock_prices <- sp500 %>%
            from = "2007-01-01", 
            to   = "2017-01-01")
 head(sp500_stock_prices)
+dim(sp500_stock_prices)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 kable(head(sp500_stock_prices), format = "latex", align = 'c', booktabs = TRUE)
+dim(sp500_stock_prices)
 ```
 
 \hspace{20 mm}
@@ -238,11 +247,15 @@ Next, the mean and standard deviation of the daily log returns are used to evalu
 ```{r, eval = F}
 sp500_stats <- sp500_returns %>%
     tq_performance(Ra = dlr, performance_fun = table.Stats, ci = 0.95, digits = 6) 
-head(sp500_stats[ ,1:5])
+sp500_stats %>%
+    select(1:5) %>%
+    head()
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
-kable(head(sp500_stats[,1:5]), format = "latex", align = 'c', booktabs = TRUE)
+kable(sp500_stats %>%
+    select(1:5) %>%
+    head(), format = "latex", align = 'c', booktabs = TRUE)
 ```
 
 \hspace{20 mm}
@@ -330,7 +343,7 @@ FANG_returns <- FANG %>%
                  transform_fun = periodReturn,
                  period = "monthly",
                  col_rename = "returns")
-head(FANG_returns)
+slice(FANG_returns, 1:2)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
@@ -342,7 +355,7 @@ FANG_returns <- FANG %>%
                  transform_fun = periodReturn,
                  period = "monthly",
                  col_rename = "returns")
-kable(head(FANG_returns), format = "latex", align = 'c', booktabs = TRUE)
+kable(slice(FANG_returns, 1:2), format = "latex", align = 'c', booktabs = TRUE)
 ```
 
 \hspace{20 mm}
@@ -402,13 +415,13 @@ Use `tq_repeat_df` to repeat `n = 4` times. This function extends the data frame
 ``` {r, eval=FALSE}
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
-head(FANG_returns_mult)
+slice(FANG_returns_mult, 1:2)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
-kable(head(FANG_returns_mult), format = "latex", align = 'c', booktabs = TRUE)
+kable(slice(FANG_returns_mult, 1:2), format = "latex", align = 'c', booktabs = TRUE)
 ```
 
 \hspace{20 mm}
@@ -532,6 +545,6 @@ FANG_portfolio_wealth %>%
 
 # Future Possibilities
 
-The _split-apply-combine_ framework presents an opportunity for progress in the realm of financial analysis due to the scale at which analysis can now be performed. Portfolio analysis is especially interesting because as the number of components and the number of portfolio blend variations increase, the number of potential portfolio combinations become infinite. Yet, with the scaling capabilities within the "tidy" ecosystem, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. The work is not complete, but, as innovation continues in the realm of data science, the realm of financial analysis will benefit with scale and speed. 
+The _split-apply-combine_ framework presents an opportunity for progress in the realm of financial analysis due to the scale at which analysis can now be performed. Portfolio analysis is especially interesting because as the number of components and the number of portfolio blend variations increase, the number of potential portfolio combinations become infinite. Yet, with the scaling capabilities within the "tidy" ecosystem, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. The work is not complete, but, as innovation continues, financial analysis will benefit from both speed and scale. 
 
 \bibliography{RJreferences}

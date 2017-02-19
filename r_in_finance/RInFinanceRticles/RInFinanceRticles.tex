@@ -8,21 +8,24 @@ Split-Apply-Combine Framework}
 \abstract{%
 Financial analysis and data science in the R programming language have
 followed two separate yet innovative paths resulting in two different
-but important systems, ``xts'' and ``tidyverse''. Because of the
-separation in development, the two systems are difficult to use
-together, which limits the full potential of financial analysis within
-R. The \texttt{tidyquant} package is an attempt to solve this problem by
-integrating the best financial analysis packages in the ``xts'' world
-with the ``tidy'' ecosystem, unlocking the benefits of the
-\emph{split-apply-combine} framework and enabling the ability to scale
-financial analyses.
+but important systems, ``xts'' and ``tidyverse''. The ``xts'' system has
+advantages with the management of financial data, while the
+``tidyverse'' has advantages with scaling using the
+\emph{split-apply-combine} framework. Because of the separation in
+development, the two systems are difficult to use together, which limits
+the full potential of financial analysis within R. The
+\texttt{tidyquant} packages solves this problem by integrating several
+of the best financial analysis packages with the ``tidy'' ecosystem, in
+the process unlocking the benefits of the \emph{split-apply-combine}
+framework.
 
 Two usage cases are discussed to illustrate the potential. The first
 example uses the scaling capabilities to provide an answer for how the
-``market'' values risk versus reward. The second example evaluates the
-performance of multiple portfolios using weighted blends. These examples
-just scratch the surface of the full potential as technology develops,
-and future possibilities are briefly addressed.
+``market'' values risk versus reward. The second example evaluates
+methods to scale the performance analysis of multiple portfolios using
+combinations of weighted blends. These examples just scratch the surface
+of the full potential as technology develops, and future possibilities
+are briefly addressed.
 }
 
 \section{Status of Financial Analysis Tools in
@@ -85,6 +88,11 @@ text, \emph{R for Data Science} \citep{R4DS2017}, which is the de facto
 manual for data scientists beginning with the R programming language.
 The ``tidyverse'' includes several packages worth describing in more
 detail.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=12cm, height=8cm]{img/tidyverse}
+\end{figure}
 
 \subsection{dplyr / tidyr}\label{dplyr-tidyr}
 
@@ -185,10 +193,9 @@ this integration is the ability to implement the
 \emph{split-apply-combine} framework to scale complex analysis.
 
 In the next section, the \emph{split-apply-combine} framework is
-discussed conceptually using non-financial data and then a demonstration
-of the \texttt{tidyquant} package is presented to illustrate some of the
-key benefits of the integration of ``xts'' based financial packages into
-the ``tidy'' ecosystem.
+discussed using non-financial data, followed by a demonstration of the
+\texttt{tidyquant} package to illustrate some of its key benefits within
+the realm of financial analysis.
 
 \section{Split-Apply-Combine, The
 Concept}\label{split-apply-combine-the-concept}
@@ -364,6 +371,7 @@ index.
 \begin{Sinput}
 sp500 <- tq_index("SP500")
 head(sp500)
+dim(sp500)
 \end{Sinput}
 \end{Schunk}
 
@@ -379,6 +387,8 @@ ATVI & ACTIVISION BLIZZARD\\
 AYI & ACUITY BRANDS\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 502 2
 
 \hspace{20 mm}
 
@@ -405,6 +415,7 @@ sp500_stock_prices <- sp500 %>%
            from = "2007-01-01", 
            to   = "2017-01-01")
 head(sp500_stock_prices)
+dim(sp500_stock_prices)
 \end{Sinput}
 \end{Schunk}
 
@@ -420,6 +431,8 @@ MMM & 3M & 2007-01-09 & 78.00 & 78.23 & 77.44 & 77.68 & 1896800 & 59.86367\\
 MMM & 3M & 2007-01-10 & 77.31 & 77.96 & 77.04 & 77.85 & 1787500 & 59.99468\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 1205845 9
 
 \hspace{20 mm}
 
@@ -473,7 +486,9 @@ of other useful statistics that characterize the returns.
 \begin{Sinput}
 sp500_stats <- sp500_returns %>%
     tq_performance(Ra = dlr, performance_fun = table.Stats, ci = 0.95, digits = 6) 
-head(sp500_stats[ ,1:5])
+sp500_stats %>%
+    select(1:5) %>%
+    head()
 \end{Sinput}
 \end{Schunk}
 
@@ -597,7 +612,7 @@ First, collect the data for the ``FANG'' stocks.
 \begin{Sinput}
 FANG <- c("FB", "AMZN", "GOOG", "NFLX") %>%
     tq_get(get = "stock.prices")
-head(FANG)
+slice(FANG, 1:6)
 \end{Sinput}
 \end{Schunk}
 
@@ -633,7 +648,7 @@ FANG_returns <- FANG %>%
                  transform_fun = periodReturn,
                  period = "monthly",
                  col_rename = "returns")
-head(FANG_returns)
+slice(FANG_returns, 1:2)
 \end{Sinput}
 \end{Schunk}
 
@@ -641,12 +656,15 @@ head(FANG_returns)
 \toprule
 symbol & date & returns\\
 \midrule
+AMZN & 2013-01-31 & 0.0318293\\
+AMZN & 2013-02-28 & -0.0046328\\
 FB & 2013-01-31 & 0.1064286\\
 FB & 2013-02-28 & -0.1204003\\
-FB & 2013-03-28 & -0.0612844\\
-FB & 2013-04-30 & 0.0856138\\
-FB & 2013-05-31 & -0.1231545\\
-FB & 2013-06-28 & 0.0217659\\
+GOOG & 2013-01-31 & 0.0448531\\
+\addlinespace
+GOOG & 2013-02-28 & 0.0602232\\
+NFLX & 2013-01-31 & 0.7958918\\
+NFLX & 2013-02-28 & 0.1382232\\
 \bottomrule
 \end{tabular}
 
@@ -748,7 +766,7 @@ groups that will be evaluated.
 \begin{Sinput}
 FANG_returns_mult <- FANG_returns %>%
     tq_repeat_df(n = 4)
-head(FANG_returns_mult)
+slice(FANG_returns_mult, 1:2)
 \end{Sinput}
 \end{Schunk}
 
@@ -758,10 +776,13 @@ portfolio & symbol & date & returns\\
 \midrule
 1 & FB & 2013-01-31 & 0.1064286\\
 1 & FB & 2013-02-28 & -0.1204003\\
-1 & FB & 2013-03-28 & -0.0612844\\
-1 & FB & 2013-04-30 & 0.0856138\\
-1 & FB & 2013-05-31 & -0.1231545\\
-1 & FB & 2013-06-28 & 0.0217659\\
+2 & FB & 2013-01-31 & 0.1064286\\
+2 & FB & 2013-02-28 & -0.1204003\\
+3 & FB & 2013-01-31 & 0.1064286\\
+\addlinespace
+3 & FB & 2013-02-28 & -0.1204003\\
+4 & FB & 2013-01-31 & 0.1064286\\
+4 & FB & 2013-02-28 & -0.1204003\\
 \bottomrule
 \end{tabular}
 
@@ -947,9 +968,8 @@ only by the data storage and processing capabilities of the computers on
 which the computations are performed. With advances in cloud technology,
 parallel processing, and optimization algorithms, the tools are
 available to scale analyses to terabytes worth of financial data in real
-time. The work is not complete, but, as innovation continues in the
-realm of data science, the realm of financial analysis will benefit with
-scale and speed.
+time. The work is not complete, but, as innovation continues, financial
+analysis will benefit from both speed and scale.
 
 \bibliography{RJreferences}
 
