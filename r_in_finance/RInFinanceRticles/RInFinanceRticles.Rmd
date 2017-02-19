@@ -234,10 +234,12 @@ sp500_returns <- sp500_stock_prices %>%
     tq_transform(ohlc_fun = Ad, transform_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
 head(sp500_returns)
+dim(sp500_returns)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 kable(head(sp500_returns), format = "latex", align = 'c', booktabs = TRUE)
+dim(sp500_returns)
 ```
 
 \hspace{20 mm}
@@ -250,12 +252,14 @@ sp500_stats <- sp500_returns %>%
 sp500_stats %>%
     select(1:5) %>%
     head()
+dim(sp500_stats)
 ```
 
 ```{r, eval=TRUE, results="asis", echo=FALSE}
 kable(sp500_stats %>%
     select(1:5) %>%
     head(), format = "latex", align = 'c', booktabs = TRUE)
+dim(sp500_stats)
 ```
 
 \hspace{20 mm}
@@ -297,6 +301,10 @@ x <- sp500_stats %>%
     head()
 
 kable(x, format = "latex", align = 'c', booktabs = TRUE, digits = 5)
+dim(sp500_stats %>%
+    filter(Observations >= 252 * 5,
+           Stdev <= 0.02,
+           ArithmeticMean >= 0.0005))
 ```
 
 \hspace{20 mm}

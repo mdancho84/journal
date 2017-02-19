@@ -456,6 +456,7 @@ sp500_returns <- sp500_stock_prices %>%
     tq_transform(ohlc_fun = Ad, transform_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
 head(sp500_returns)
+dim(sp500_returns)
 \end{Sinput}
 \end{Schunk}
 
@@ -471,6 +472,8 @@ MMM & 2007-01-09 & 0.0011593\\
 MMM & 2007-01-10 & 0.0021860\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 1205845 3
 
 \hspace{20 mm}
 
@@ -489,6 +492,7 @@ sp500_stats <- sp500_returns %>%
 sp500_stats %>%
     select(1:5) %>%
     head()
+dim(sp500_stats)
 \end{Sinput}
 \end{Schunk}
 
@@ -504,6 +508,8 @@ ATVI & 0.000604 & 0.000359 & 10.735599 & -0.000263\\
 AYI & 0.000701 & 0.000420 & 6.011008 & -0.000225\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 502 17
 
 \hspace{20 mm}
 
@@ -565,6 +571,8 @@ ORLY & 0.00086 & 0.00070 & 10.20942 & 0.00016\\
 AGN & 0.00082 & 0.00067 & 6.06114 & 0.00013\\
 \bottomrule
 \end{tabular}
+
+{[}1{]} 52 17
 
 \hspace{20 mm}
 
