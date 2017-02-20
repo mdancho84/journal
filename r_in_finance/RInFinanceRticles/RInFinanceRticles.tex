@@ -761,7 +761,8 @@ Weighted portfolio aggregation involves three steps:
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Make a portfolio by repeating the stock returns table \emph{n} times
+  Make a portfolio by repeating the stock returns table \emph{n} times,
+  once for each portfolio desired
 \item
   Create a weights table to map weights by asset and portfolio
 \item
@@ -769,8 +770,9 @@ Weighted portfolio aggregation involves three steps:
   \texttt{PerformanceAnalytics::Return.portfolio}
 \end{enumerate}
 
-\paragraph{Step 1: Make a portfolio by repeating the stock
-returns}\label{step-1-make-a-portfolio-by-repeating-the-stock-returns}
+\paragraph{\texorpdfstring{Step 1: Repeat the stock returns table
+\emph{n} times, once for each portfolio
+desired}{Step 1: Repeat the stock returns table n times, once for each portfolio desired}}\label{step-1-repeat-the-stock-returns-table-n-times-once-for-each-portfolio-desired}
 
 Use \texttt{tq\_repeat\_df} to repeat \texttt{n\ =\ 4} times. This
 function extends the data frame row-wise, adding an index column named
@@ -811,7 +813,7 @@ Table}\label{step-2-create-a-weights-table}
 
 Construct a weights table using the portfolio blending parameters, which
 will be mapped to the stocks within each of the portfolios in the next
-step.. The format of the weights table is critical. The table must have
+step. The format of the weights table is critical. The table must have
 three columns, ``portfolio'', ``stocks'', and ``weights''. Make sure to
 group by the portfolio column.
 
@@ -975,15 +977,31 @@ portfolio & value.end & VaR.monthly\\
 
 \section{Conclusion}\label{conclusion}
 
-\texttt{tidyquant} unlocks the \emph{split-apply-combine} framework,
-increasing the scale at which financial analyses can now be performed.
-As the scale of analyses increase, the vast array of possibilities
-becomes limited only by the data storage and processing capabilities of
-the computers on which the computations are performed. With advances in
-cloud technology, parallel processing, and optimization algorithms, the
-tools are available to scale analyses to terabytes worth of financial
-data in real time. The work is not complete, but as innovation continues
-financial analysis will benefit from both speed and scale.
+With the creation of the ``xts'' and ``tidyverse'' systems, high
+performance tools are available to perform financial analysis and to
+scale data science in R. Because of the separation in development of the
+two systems, the ability to scale financial analysis is limited.
+\texttt{tidyquant} unlocks the \emph{split-apply-combine} framework of
+the ``tidyverse'', increasing the scale at which financial analyses can
+now be performed.
+
+As scale increases, the vast array of possibilities becomes limited only
+by the data storage and processing capabilities of the computers on
+which the computations are performed. With advances in cloud technology,
+parallel processing, and optimization algorithms, the tools are
+available to scale analyses to terabytes worth of financial data in real
+time. \texttt{tidyquant} is being built with extendibility in mind,
+allowing for potential integration with Apache Spark\textsuperscript{TM}
+(large-scale data processing), \texttt{multidplyr} (localized multicore
+parallel processing), and even Bloomberg
+Terminal\textsuperscript{\textregistered} integration for access to
+better performance and higher quality data. Further, with advances in
+artificial intelligence and machine learning, the potential for
+financial analysis at scale is in its infancy. This is an exciting time.
+As \texttt{tidyquant}, complimentary R software packages, and technology
+in general evolves, financial analysis will certainly benefit from the
+powerful speed, scale, and autonomous learning that is rapidly becoming
+available.
 
 \pagebreak
 
