@@ -15,6 +15,9 @@ abstract: >
     Two usage cases are discussed to illustrate the benefits of `tidyquant`. The first example uses the scaling capabilities to provide an answer for how the financial market values risk versus reward. The second example evaluates methods to scale the performance analysis of multiple portfolios using combinations of weighted asset blends. These examples only scratch the surface of what is possible with `tidyquant`.
     
 preamble: >
+    \usepackage{caption}
+    \newcommand{\timeline}{\caption*{Source: \citet{timelyportfolio}}}
+    \newcommand{\tidyverse}{\caption*{Source: \citet{tidyverse}}}
 output: rticles::rjournal_article_tq
 ---
 
@@ -47,6 +50,7 @@ The R programming language has seen immense growth in both popularity and tools 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=14cm]{img/timeline}
+  \timeline
 \end{figure}
 
 ## quantmod / TTR
@@ -68,6 +72,7 @@ In parallel with the progression in the R in Finance community, developers at _R
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=12cm, height=8cm]{img/tidyverse}
+  \tidyverse
 \end{figure}
 
 ## dplyr / tidyr
