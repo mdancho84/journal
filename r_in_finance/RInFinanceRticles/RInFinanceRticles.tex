@@ -7,25 +7,24 @@ Split-Apply-Combine Framework}
 
 \abstract{%
 Financial analysis and data science in the R programming language have
-followed two separate yet innovative paths resulting in two different
-but important systems, ``xts'' and ``tidyverse''. The ``xts'' system has
-advantages with the management of financial data, while the
-``tidyverse'' has advantages with scaling using the
-\emph{split-apply-combine} framework. Because of the separation in
-development, the two systems are difficult to use together, which limits
-the full potential of financial analysis within R. The
-\texttt{tidyquant} packages solves this problem by integrating several
-of the best financial analysis packages with the ``tidy'' ecosystem, in
-the process unlocking the benefits of the \emph{split-apply-combine}
-framework.
+followed separate paths resulting in two important systems: ``xts'' and
+``tidyverse''. The advantage of the ``xts'' system is in the management
+of time series financial data. The advantage of the ``tidyverse'' system
+is in the ability to scale analyses using the \emph{split-apply-combine}
+framework. Because of the separation in development, the two systems are
+difficult to use together, limiting the full potential of financial
+analysis within R. The \texttt{tidyquant} package solves this problem by
+integrating several of the best financial analysis packages with the
+``tidy'' ecosystem. The integration unlocks the
+\emph{split-apply-combine} framework to scale analyses.
 
-Two usage cases are discussed to illustrate the potential. The first
-example uses the scaling capabilities to provide an answer for how the
-``market'' values risk versus reward. The second example evaluates
-methods to scale the performance analysis of multiple portfolios using
-combinations of weighted blends. These examples just scratch the surface
-of the full potential as technology develops, and future possibilities
-are briefly addressed.
+Two usage cases are discussed to illustrate the benefits of
+\texttt{tidyquant}. The first example uses the scaling capabilities to
+provide an answer for how the financial market values risk versus
+reward. The second example evaluates methods to scale the performance
+analysis of multiple portfolios using combinations of weighted asset
+blends. These examples only scratch the surface of what is possible with
+\texttt{tidyquant}.
 }
 
 \section{Status of Financial Analysis Tools in
@@ -70,7 +69,7 @@ under one class, \texttt{xts}.
 The \texttt{PerformanceAnalytics} package includes a large collection of
 econometric functions for financial performance analysis, many of which
 are described in \emph{Practical Portfolio Performance Measurement and
-Attribution} by Carl Bacon \citep{Bacon2004} . These functions enable
+Attribution} by Carl Bacon \citep{Bacon2004}. These functions enable
 analysis of individual asset and portfolio (the weighted aggregation of
 multiple assets) returns using popular statistical methods for measuring
 performance.
@@ -150,47 +149,47 @@ Advantages}\label{divergent-philosophies-each-with-advantages}
 All of the major financial packages work within the ``xts'' system,
 which is specifically designed for time series analysis. The system
 works very well. The extensible time series, ``xts'', data structure is
-much like a numeric matrix, the only major visible difference being row
-names consisting of the date or date-time information. The objects can
-be subset or transformed to different periodicity very easily. The
-disadvantage is that the application is strict to numeric data, but
-because of its focus it manages the numeric time-based data extremely
-well.
+much like a numeric matrix. The only major visible difference between
+the two is that row names consist of the date or date-time information.
+The objects can be subset or transformed to different periodicity very
+easily. The disadvantage is that the application is strict to numeric
+data, but because of its focus it manages the numeric time-based data
+extremely well.
 
 Much of the recent innovation in data analysis has occurred within the
 ``tidy'' ecosystem. With the entrance of the ``tidyverse'', scaling
 analysis using the \emph{split-apply-combine} framework has become easy,
-efficient, and core functionality. Further, advances in date and
-date-time functionality have enabled management of time series data
-within the ``tibble'' data structure. As the data science field grows,
-more innovative functionality will continue to be developed within the
-``tidy'' ecosystem, much of which will be (and is already) useful to the
-field of financial analysis.
+efficient, and a core principle. Further, advances in date and date-time
+functionality have enabled management of time series data within the
+``tibble'' data structure. As the data science field grows, more
+innovative functionality will be developed within the ``tidy''
+ecosystem, much of which will be (and is already) useful to the field of
+financial analysis.
 
 The two systems, ``xts'' and the ``tidyverse'', are very different on a
 fundamental and philosophical level. Both have advantages that are
-needed within the realm of financial analysis, but unfortunately the two
-systems do not work well together. The ``xts'' system is strictly
-numeric-based, while the ``tidy'' system is strictly data frame-based.
-Passing data between systems is difficult if not painful, and without
-communication between each the full potential of financial analysis
-within R is limited.
+needed within the realm of financial analysis, but the two systems do
+not work well together. The ``xts'' system is strictly numeric-based,
+while the ``tidy'' system is strictly data frame-based. Passing data
+between systems is difficult if not painful and without communication
+between each the full potential of financial analysis within R is
+limited.
 
-To solve this problem, the \texttt{tidyquant} package was developed as a
-way to integrate many of the ``xts'' based financial analysis packages
-into the ``tidyverse''. The central motivation behind the integration is
-to enable the user to gain the benefits of both systems. The
-\texttt{tidyquant} package works with ``tidy'' input and output, and as
-a result fits seamlessly within the ``tidy'' ecosystem allowing for
-analysis to follow the data science workflow discussed in detail in
-\emph{R for Data Science} \citep{R4DS2017}. Internally,
-\texttt{tidyquant} leverages the ``xts'' system as the engine to perform
-financial computations. This enables almost all of the functionality of
-\texttt{quantmod}, \texttt{TTR}, \texttt{PerformanceAnalytics},
-\texttt{xts} and \texttt{zoo} to be used integrally (without switching
-back and forth) within the ``tidy'' ecosystem. The primary benefit of
-this integration is the ability to implement the
-\emph{split-apply-combine} framework to scale complex analysis.
+To solve this problem, the \texttt{tidyquant} package was developed to
+integrate many of the ``xts'' based financial analysis packages into the
+``tidyverse''. The central motivation behind the integration is to
+enable the user to gain the benefits of both systems. The
+\texttt{tidyquant} package works with ``tidy'' input and output, fitting
+seamlessly within the ``tidy'' ecosystem allowing for analysis to follow
+the data science workflow discussed in detail in \emph{R for Data
+Science} \citep{R4DS2017}. Internally, \texttt{tidyquant} leverages the
+``xts'' system as the engine to perform financial computations. This
+enables almost all of the functionality of \texttt{quantmod},
+\texttt{TTR}, \texttt{PerformanceAnalytics}, \texttt{xts} and
+\texttt{zoo} to be used integrally (without switching back and forth)
+within the ``tidy'' ecosystem. The primary benefit of this integration
+is the ability to implement the \emph{split-apply-combine} framework to
+scale complex analysis.
 
 In the next section, the \emph{split-apply-combine} framework is
 discussed using non-financial data, followed by a demonstration of the
@@ -203,9 +202,9 @@ Concept}\label{split-apply-combine-the-concept}
 The \emph{split-apply-combine} framework is described in \emph{The
 Split-Apply-Combine Strategy for Data Analysis} \citep{plyr}. To
 summarize, the core concept is to split a data set into groups, apply
-functions to independent groups, and then recombine the results. The
-value in this approach is that the framework enables scaling analyses
-from one group to many groups and comparing each group to each other.
+functions to independent groups, then recombine the results. The value
+in this approach is that the framework enables scaling analyses from one
+group to many groups and comparing each group to each other.
 
 A simple example using the \texttt{mtcars} data set illustrates this
 framework. The \texttt{mtcars} data set includes the various attributes
@@ -229,7 +228,7 @@ automobiles. Fortunately, the frame of the question narrows the analysis
 to two variables: ``mpg'', continuous numeric data describing the fuel
 efficiency of each vehicle, and ``cyl'', discrete numeric data
 indicating number of engine cylinders for each vehicle. The ``cyl'' data
-can be grouped on to keep like observations together.
+can be grouped to keep like observations together.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -315,10 +314,10 @@ Finance}\label{split-apply-combine-applications-in-finance}
 
 The financial analysis packages are difficult or impossible to use
 within the ``tidy'' ecosystem. A new tool is needed, \texttt{tidyquant}.
-The \texttt{tidyquant} package has one major advance: it integrates the
-``xts'' based financial packages with the ``tidyverse'' to enable the
-data science workflow and ``tidy'' ecosystem functionality to be applied
-to financial analysis. The innovation is relatively minor on a
+The \texttt{tidyquant} package has one major advantage: it integrates
+the ``xts'' based financial packages with the ``tidyverse'' to enable
+the data science workflow and ``tidy'' ecosystem functionality to be
+applied to financial analysis. The innovation is relatively minor on a
 conceptual level, but the net effect is significant in that the tools
 within the ``tidy'' ecosystem are now unlocked for financial analysis.
 The following examples illustrate the new capability.
@@ -360,10 +359,10 @@ library(tidyquant)
 \end{Sinput}
 \end{Schunk}
 
-Next, collect some financial data. The question implies that a large
-sample of stock data is needed to evaluate how performance and risk is
-valued within the ``market''. The S\&P 500 index is a good place to
-start. \texttt{tidyquant} includes a function, \texttt{tq\_index}, which
+Next, collect ticker data. The question implies that a large sample of
+stock data is needed to evaluate how performance and risk is valued
+within the ``market''. The S\&P 500 index is a good place to start.
+\texttt{tidyquant} includes a function, \texttt{tq\_index}, which
 returns the stock symbols and company names for every stock within an
 index.
 
@@ -583,7 +582,7 @@ Portfolio aggregation is a useful technique to reduce risk while
 maintaining acceptable returns. In this example, the goal is to evaluate
 a few blended portfolios of ``FANG'' stocks (``FB'', ``AMZN'', ``NFLX'',
 and ``GOOG'').
-\footnote{The acronymn, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.}
+\footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.}
 However, more important is the conceptual idea that the number of
 weighted portfolio blends and the number of underlying assets can easily
 be increased to scale the analysis. As the example progresses, consider
@@ -594,6 +593,8 @@ Throughout the past half decade, the FANG stocks have experienced a
 unique combination of high returns and high volatility, making the FANG
 stocks a good example to use in a blended portfolio that reduces
 downside risk but yields high returns.
+
+\pagebreak
 
 Start with a question: \emph{What portfolio blends reduce downside risk
 while maximizing return?}
@@ -646,8 +647,8 @@ Next, transform to monthly returns using the \emph{split-apply-combine}
 framework. Use \texttt{group\_by} to group on the ``symbol'' column, and
 \texttt{tq\_transform} to transform the adjusted prices to monthly
 arithmetic returns. Note that ``FB'' was only actively traded for a full
-year beginning in 2013, so it makes sense to compare the investments
-since then.
+year beginning in 2013, so the investments will be compared starting
+from that year.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -687,7 +688,7 @@ NFLX & 2013-02-28 & 0.1382232\\
 \subsubsection{Individual Asset
 Performance}\label{individual-asset-performance}
 
-Before the portfolios are generated and evaluated, it makes sense to
+Before the portfolios are generated and evaluated, it is important to
 visualize and assess the performance of the individual asset returns.
 The first visualization uses a wealth index, which takes an initial
 investment as an input and returns a visualization showing how the
@@ -809,10 +810,10 @@ portfolio & symbol & date & returns\\
 Table}\label{step-2-create-a-weights-table}
 
 Construct a weights table using the portfolio blending parameters, which
-will be used to map to the portfolios in the next step. The format of
-the weights table is critical. The table must have three columns,
-``portfolio'', ``stocks'', and ``weights''. Make sure to group by the
-portfolio column.
+will be mapped to the stocks within each of the portfolios in the next
+step.. The format of the weights table is critical. The table must have
+three columns, ``portfolio'', ``stocks'', and ``weights''. Make sure to
+group by the portfolio column.
 
 \begin{itemize}
 \tightlist
@@ -972,21 +973,17 @@ portfolio & value.end & VaR.monthly\\
 
 \hspace{20 mm}
 
-\section{Future Possibilities}\label{future-possibilities}
+\section{Conclusion}\label{conclusion}
 
-The \emph{split-apply-combine} framework presents an opportunity for
-progress in the realm of financial analysis due to the scale at which
-analysis can now be performed. Portfolio analysis is especially
-interesting because as the number of components and the number of
-portfolio blend variations increase, the number of potential portfolio
-combinations become infinite. Yet, with the scaling capabilities within
-the ``tidy'' ecosystem, the vast array of possibilities becomes limited
-only by the data storage and processing capabilities of the computers on
-which the computations are performed. With advances in cloud technology,
-parallel processing, and optimization algorithms, the tools are
-available to scale analyses to terabytes worth of financial data in real
-time. The work is not complete, but, as innovation continues, financial
-analysis will benefit from both speed and scale.
+\texttt{tidyquant} unlocks the \emph{split-apply-combine} framework,
+increasing the scale at which financial analyses can now be performed.
+As the scale of analyses increase, the vast array of possibilities
+becomes limited only by the data storage and processing capabilities of
+the computers on which the computations are performed. With advances in
+cloud technology, parallel processing, and optimization algorithms, the
+tools are available to scale analyses to terabytes worth of financial
+data in real time. The work is not complete, but as innovation continues
+financial analysis will benefit from both speed and scale.
 
 \pagebreak
 
