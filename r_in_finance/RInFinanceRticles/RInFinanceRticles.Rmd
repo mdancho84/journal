@@ -1,6 +1,5 @@
 ---
-title: New Tools for Performing Financial Analysis Using the "Tidy" Split-Apply-Combine
-  Framework
+title: New Tools for Performing Financial Analysis Within the "Tidy" Ecosystem
 author:
   - name: Matt Dancho
     affiliation: Business Science
@@ -9,7 +8,7 @@ author:
     affiliation: Business Science
     email:  dvaughan@business-science.io
 abstract: >
-    Financial analysis and data science in the R programming language have followed separate paths resulting in two important systems: "xts" and "tidyverse". The advantage of the "xts" system is in the management of time series financial data. The advantage of the "tidyverse" system is in the ability to scale analyses using the _split-apply-combine_ framework. Because of the separation in development, the two systems are difficult to use together, limiting the full potential of financial analysis within R. The `tidyquant` package solves this problem by integrating several of the best financial analysis packages with the "tidy" ecosystem. The integration unlocks the _split-apply-combine_ framework to scale analyses.
+    Financial analysis and data science in the R programming language have followed separate paths resulting in two important systems: "xts" and "tidyverse". The advantage of the "xts" system is in the management of time series financial data. The advantage of the "tidyverse" system is in the ability to implement a set of packages that have a uniform structure and data representation that works within the data science workflow. Because of the separation in development, the two systems are difficult to use together, limiting the full potential of financial analysis within R. The `tidyquant` package solves this problem by integrating several of the best financial analysis packages with the "tidy" ecosystem. The integration unlocks the data science workflow, which enables modeling and scaling analyses in a "tidy" way.
     
     
     Two usage cases are discussed to illustrate the benefits of `tidyquant`. The first example uses the scaling capabilities to provide an answer for how the financial market values risk versus reward. The second example evaluates methods to scale the performance analysis of multiple portfolios using combinations of weighted asset blends. These examples only scratch the surface of what is possible with `tidyquant`.
@@ -67,7 +66,7 @@ The `PerformanceAnalytics` package includes a large collection of econometric fu
 
 # New Tools: tidyverse
 
-In parallel with the progression in the R in Finance community, developers at _RStudio_ have been developing useful tools for data science in R, namely the "tidyverse". The "tidyverse" or "tidy" ecosystem is a collection of packages that fundamentally and philosophically work together utilizing "tidy" data, which is defined in _Tidy Data_ \citep{tidy-data}. Further, the "tidyverse" packages and the data analysis workflow are documented in the online text, _R for Data Science_ \citep{R4DS2017}, which is the de facto manual for data scientists beginning with the R programming language. The "tidyverse" includes several packages worth describing in more detail.
+In parallel with the progression in the R in Finance community, developers at _RStudio_ have been developing useful tools for data science in R, namely the "tidyverse". The "tidyverse" or "tidy" ecosystem is a collection of packages that fundamentally and philosophically work together utilizing a common "tidy" data representation, which is defined in _Tidy Data_ \citep{tidy-data}. To summarize, the "tidy" data representation has _each variable as a column, each observation as a row, and each value in a cell_.\footnote{The "tidy" data format is often referred to as "long" format versus "wide" format because the observations within the data set extend row-wise versus column-wise. } The "tidyverse" packages all share a common API design and fit together seamlessly within the data science workflow. Additionally, the "tidyverse" packages are documented in the online text, _R for Data Science_ \citep{R4DS2017}, which is the de facto manual for data scientists beginning with the R programming language. The "tidyverse" includes several packages worth describing in more detail.
 
 \begin{figure}[htbp]
   \centering
@@ -77,7 +76,7 @@ In parallel with the progression in the R in Finance community, developers at _R
 
 ## dplyr / tidyr
 
-The `dplyr` and `tidyr` packages provide tools to clean and manipulate data using the _split-apply-combine_ framework popularized by Hadley Wickham in _The Split-Apply-Combine Strategy for Data Analysis_ \citep{plyr}. The major advances were threefold. First, the packages simplified and made consistent many of the most common data manipulation and summarization tasks in R. Second, the packages enable the _split-apply-combine_ framework to work with grouped data sets. Third, the packages incorporated the use of the pipe (`%>%`) from the `magrittr` package, enabling functional verbs to follow an easy, efficient, and human-readable workflow. 
+The `dplyr` and `tidyr` packages provide tools to clean and manipulate data. Historically, the `plyr` package, the precursor to `dplyr`, was developed as a mechanism to implement the _split-apply-combine_ framework popularized by Hadley Wickham in _The Split-Apply-Combine Strategy for Data Analysis_ \citep{plyr}. The `dplyr` package advanced this concept by implementing this framework internally along with providing many additional tools that work naturally within the framework. The `tidyr` package enables users to format the data in a "tidy" way. The major advances were threefold. First, the packages simplified and made consistent many of the most common data manipulation and summarization tasks in R. Second, the packages implement the _split-apply-combine_ framework internally allowing users to work with grouped and nested data sets. Third, the packages incorporated the use of the pipe (`%>%`) from the `magrittr` package enabling functional verbs to follow an easy, efficient, and human-readable workflow. 
 
 ## purrr
 
@@ -96,90 +95,121 @@ The `ggplot2` package provides mechanisms for creating complex visualizations us
 The `lubridate` package includes functions to manage date and date-time objects in R, which is discussed in _Dates and Times Made Easy with lubridate_ \citep{lubridate}. The combination of `lubridate` with `dplyr` enables easy coercion of character class to date and date-time, filtering and subsetting on dates, and many more complex tasks that are essential to financial analysis. Further, combining `lubridate` with `ggplot2` enables graphical visualization using dates and date-times.   
 
 
-# Divergent Philosophies, Each with Advantages
+# Different Data Structures, Each with Advantages
 
-All of the major financial packages work within the "xts" system, which is specifically designed for time series analysis. The system works very well. The extensible time series, "xts", data structure is much like a numeric matrix. The only major visible difference between the two is that row names consist of the date or date-time information. The objects can be subset or transformed to different periodicity very easily. The disadvantage is that the application is strict to numeric data, but because of its focus it manages the numeric time-based data extremely well.
+All of the major financial packages work within the "xts" system, which is specifically designed for time series analysis. The system works very well. The extensible time series, "xts", data structure is much like a numeric "matrix". The primary difference is that row names consist of the date or date-time information. The objects can be subset by date or transformed to different periodicity very easily using a wide variety of flexible functions built to operate within the "xts" time-based system. Because of its focus, flexibility and design, the "xts" system manages single observations of the numeric time-based data extremely well. Multiple observations are handled by merging columns for different groups in a "wide" format, which is different than the "tidy" data representation (i.e. "long" format). The system has been designed to manage this data representation.
 
-Much of the recent innovation in data analysis has occurred within the "tidy" ecosystem. With the entrance of the "tidyverse", scaling analysis using the _split-apply-combine_ framework has become easy, efficient, and a core principle. Further, advances in date and date-time functionality have enabled management of time series data within the "tibble" data structure. As the data science field grows, more innovative functionality will be developed within the "tidy" ecosystem, much of which will be (and is already) useful to the field of financial analysis.
+Much of the recent innovation in data science has occurred within the "tidy" ecosystem. With the entrance of the "tidyverse", grouping and iteratively applying functions (i.e. scaling analysis) has become easy, efficient, and a core principle. Further, advances in date and date-time functionality have enabled management of time series data within the "tibble" data structure. As the data science field grows, more innovative functionality will be developed within the "tidy" ecosystem, much of which will be (and is already) useful to the field of financial analysis.
 
-The two systems, "xts" and the "tidyverse", are very different on a fundamental and philosophical level. Both have advantages that are needed within the realm of financial analysis, but the two systems do not work well together. The "xts" system is strictly numeric-based, while the "tidy" system is strictly data frame-based. Passing data between systems is difficult if not painful and without communication between each the full potential of financial analysis within R is limited.
+The two systems, "xts" and the "tidyverse", have advantages that are needed within the realm of financial analysis. The "xts" system has the infrastructure to perform financial analytics. The "tidyverse" has the functions and data representation to seamlessly scale analysis using the data science workflow. Unfortunately, the two systems do not work well together. The "xts" system has underlying dependencies on the "matrix" data structure whereas the "tidy" ecosystem is built on top of the "tibble" ("tidy" data frame) data structure. The "matrix" structure is _homogenous_ meaning each column in the frame must hold the same data type. In R, coercion rules takeover when data types are combined within a "matrix". For example, combining a character and a numeric class will result in a matrix of character class. As a result, the "xts" system can not be formatted in a "tidy" structure with each variable as a column, each observation as a row, and each value in a cell. The solution is to merge data sets together keeping the column names as the observation. This works well in the "xts" system, but presents problems in the "tidyverse" system since the data is not represented following the "tidy" principles. Conversely, the "tibble" structure is _heterogenous_ meaning each column can contain a different data type. This works extremely well for grouping observations together. For example, a "tibble" can contain symbols in one column and daily prices in another column. This enables applying functions to groups (e.g. symbol) for scaling analyses. The end result is two excellent systems that do not communicate easily. Without communication between each system the full potential of financial analysis within R is limited.
 
-To solve this problem, the `tidyquant` package was developed to integrate many of the "xts" based financial analysis packages into the "tidyverse". The central motivation behind the integration is to enable the user to gain the benefits of both systems. The `tidyquant` package works with "tidy" input and output, fitting seamlessly within the "tidy" ecosystem allowing for analysis to follow the data science workflow discussed in detail in _R for Data Science_ \citep{R4DS2017}. Internally, `tidyquant` leverages the "xts" system as the engine to perform financial computations. This enables almost all of the functionality of `quantmod`, `TTR`, `PerformanceAnalytics`, `xts` and `zoo` to be used integrally (without switching back and forth) within the "tidy" ecosystem. The primary benefit of this integration is the ability to implement the _split-apply-combine_ framework to scale complex analysis. 
+To solve this problem, the `tidyquant` package was developed to integrate many of the "xts" based financial analysis packages into the "tidyverse". The central motivation behind the integration is to enable the user to gain the benefits of both systems. The `tidyquant` package works with "tidy" input and output, fitting seamlessly within the "tidy" ecosystem allowing for analysis to follow the data science workflow discussed in detail in _R for Data Science_ \citep{R4DS2017}. Internally, `tidyquant` leverages the "xts" system as the engine to perform financial computations. This enables almost all of the functionality of `quantmod`, `TTR`, `PerformanceAnalytics`, `xts` and `zoo` to be used integrally (without switching back and forth) within the "tidy" ecosystem.  
 
-In the next section, the _split-apply-combine_ framework is discussed using non-financial data, followed by a demonstration of the `tidyquant` package to illustrate some of its key benefits within the realm of financial analysis. 
+In the next section, an analysis is performed with the "tidyverse" to illustrate the benefits in manipulating grouped financial data. Then, in the final section, a demonstration of the `tidyquant` package is performed to illustrate some of its key benefits within the realm of financial analysis. 
 
 
-# Split-Apply-Combine, The Concept
+# Benefits of the "tidyverse"
 
-The _split-apply-combine_ framework is described in _The Split-Apply-Combine Strategy for Data Analysis_ \citep{plyr}. To summarize, the core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is that the framework enables scaling analyses from one group to many groups and comparing each group to each other. 
+One of the primary benefits to the "tidyverse" is the ability to work with grouped data sets. The core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is that the framework enables scaling analyses from one group to many groups and comparing each group to each other. A simple example using the `FANG` data set illustrates this framework.  
 
-A simple example using the `mtcars` data set illustrates this framework. The `mtcars` data set includes the various attributes for 32 vehicles along with the fuel efficiency (MPG) of each vehicle. 
-
-Start with a question: _How does engine size affect fuel consumption?_
+Start with a question: _What is the historical performance for the FANG tech stocks?_
 
 ```{r}
-# Load the tidyverse and the mtcars data set in R.
-library(tidyverse)
-data("mtcars")
+# Load the tidyquant and the FANG data set in R.
+library(tidyquant) # Will use only tidyverse functionality in this example
+data("FANG")       # From tidyquant package
 ```
 
-Next, view the data set. The `as_tibble` function is used to convert to the "tidy" data frame structure. The data set consists of 12 columns (features) and 32 rows (observations) related to various automobiles. Fortunately, the frame of the question narrows the analysis to two variables: "mpg", continuous numeric data describing the fuel efficiency of each vehicle, and "cyl", discrete numeric data indicating number of engine cylinders for each vehicle. The "cyl" data can be grouped to keep like observations together.
+Next, view the data set. The data consists of the historical daily stock prices for the "FANG"\footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.} tech stocks ("FB", "AMZN", "NFLX", and "GOOG") spanning from the beginning of 2013 to the end of 2016.  
 
 ```{r, eval = FALSE}
-mtcars <- mtcars %>%
-    rownames_to_column(var = "model") %>%
-    as_tibble()
-head(mtcars)
+head(FANG)
+dim(FANG)
 ```
 
 ```{r, eval = TRUE, results="asis", echo=FALSE}
 # Run. Only output shown
-mtcars <- mtcars %>%
-    rownames_to_column(var = "model") %>%
-    as_tibble()
-kable(head(mtcars), format = "latex", align = 'c', booktabs = TRUE)
+kable(head(FANG), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG)
 ```
 
 \hspace{20 mm}
 
-Many solutions exist to compare fuel consumption and engine size. For simplicity, the mean and standard deviation are used to characterize the relationship between number of cylinders and miles per gallon. Implementing _split-apply-combine_ is as easy as grouping by a categorical variable and summarizing by the target measure. In this case, the categorical variable is the "cyl" variable.
+Historical performance is a function of the period returns (i.e. percentage change between current price and previous price). A wealth index is often used to assess the investment growth, which is the product of the period returns and asset value during the previous period. The data workflow is split into two steps.
 
-```{r, eval=FALSE}
-mtcars %>%
-    mutate(cyl = factor(cyl)) %>%
-    group_by(cyl) %>%
-    summarize(mpg.mean = mean(mpg),
-              mpg.sd = sd(mpg))
+1. Calculate the periodic returns 
+2. Calculate cumulative performance
+
+Calculate the periodic returns. The lag is needed to line up the previous period return with the current period return. The difference is then taken, and from the difference the period return is the percentage change from the initial value. Only the "symbol", "date" and "adjusted" price columns are needed to start, so a `select` statement removes the unnecessary columns. Then the data is grouped by "symbol" using the `group_by` function. The `mutate` function adds calculated columns to a data frame. The "lag" is calculated using the `lag` function from `dplyr`. The "diff" is the "adjusted" closing price minus the "lag". The "period.returns" is the percentage change from the "adjusted", which is "diff" divided by "adjusted". The `replace_na` function is used to remove `NA` values with zero. Note that an ungrouped "tibble" is returned due to the `replace_na` function. 
+
+```{r, eval = FALSE}
+FANG_returns <- FANG %>%
+    select(-(open:volume)) %>%
+    group_by(symbol) %>%
+    mutate(lag = lag(adjusted),
+           diff = adjusted - lag,
+           period.returns = diff / adjusted) %>%
+    replace_na(list(period.returns = 0)) 
+head(FANG_returns)
+dim(FANG_returns)
 ```
 
-```{r, eval=TRUE, results="asis", echo=FALSE}
-mtcars %>%
-    mutate(cyl = factor(cyl)) %>%
-    group_by(cyl) %>%
-    summarize(mpg.mean = mean(mpg),
-              mpg.sd = sd(mpg)) %>%
-    kable(format = "latex", align = 'c', booktabs = TRUE)
+```{r, eval = TRUE, results="asis", echo=FALSE}
+# Run. Only output shown
+FANG_returns <- FANG %>%
+    select(-(open:volume)) %>%
+    group_by(symbol) %>%
+    mutate(lag = lag(adjusted),
+           diff = adjusted - lag,
+           period.returns = diff / adjusted) %>%
+    replace_na(list(period.returns = 0))
+kable(head(FANG_returns), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG_returns)
 ```
 
 \hspace{20 mm}
 
-From the results, the vehicles, when grouped by "cyl", appear to have an inverse relationship between number of cylinders and miles per gallon. We can also visualize this relationship using `ggplot2`.
+Now, the wealth index can be calculated. The wealth index is the cumulative product of the period returns multiplied by the initial investment value. An initial investment of 10K USD is used as an example.
 
-```{r, fig.width=5, fig.height=3.5, fig.align="center"}
-mtcars %>%
-    mutate(cyl = factor(cyl)) %>%
-    ggplot(aes(x = cyl, y = mpg, fill = cyl)) +
-    geom_boxplot() +
-    labs(title = "Summarizing Relationships using Split-Apply-Combine",
-         subtitle = "Inverse Relationship between Engine Size and Fuel Efficiency",
-         x = "Engine Size (# of Cylinders)",
-         y = "Fuel Efficiency (MPG)")
+```{r, eval = FALSE}
+initial_investment <- 10000
+FANG_performance <- FANG_returns %>%
+    group_by(symbol) %>%
+    mutate(wealth.index = initial_investment * cumprod(1 + period.returns)) 
+head(FANG_performance)
+dim(FANG_performance)
 ```
 
-The _split-apply-combine_ framework is used to solve a wide range of complex problems. In the next section, examples are presented to illustrate the power of unlocking the framework combined with data science workflow tools within financial analysis applications.
+```{r, eval = TRUE, results="asis", echo=FALSE}
+# Run. Only output shown
+initial_investment <- 10000
+FANG_performance <- FANG_returns %>%
+    group_by(symbol) %>%
+    mutate(wealth.index = initial_investment * cumprod(1 + period.returns)) 
+kable(head(FANG_performance), format = "latex", align = 'c', booktabs = TRUE)
+dim(FANG_performance)
+```
+
+\hspace{20 mm}
+
+Last, the results are visualized using `ggplot2`.  
+
+```{r}
+FANG_performance %>%
+    ggplot(aes(x = date, y = wealth.index, color = symbol)) +
+    geom_line() +
+    labs(title = "Individual Stocks: Comparing the Growth of 10K",
+         x = "", y = "Investment Value") +
+    scale_y_continuous(labels = scales::dollar) + 
+    theme_minimal()
+```
 
 
-# Split-Apply-Combine, Applications in Finance
+
+The "tidy" ecosystem can be used to solve a wide range of complex problems. In the next section, examples are presented to illustrate the power of combining the financial analysis tools from the "xts" system with the "tidyverse" for financial applications.
+
+
+# Financial Applications with "tidyquant"
 
 The financial analysis packages are difficult or impossible to use within the "tidy" ecosystem. A new tool is needed, `tidyquant`. The `tidyquant` package has one major advantage: it integrates the "xts" based financial packages with the "tidyverse" to enable the data science workflow and "tidy" ecosystem functionality to be applied to financial analysis. The innovation is relatively minor on a conceptual level, but the net effect is significant in that the tools within the "tidy" ecosystem are now unlocked for financial analysis. The following examples illustrate the new capability.
 
@@ -213,7 +243,7 @@ dim(sp500)
 
 \hspace{20 mm}
 
-Next, we need the historical stock prices for each stock within the S&P 500 index. The stock prices are easy to retrieve at scale using the function, `tq_get`, with the "get" option, `get = "stock.prices"`. `tq_get` is a wrapper for `quantmod::getSymbols`, which enables passing the underlying function parameters `from` and `to`. The input to `tq_get` is `data`, which can be a single stock symbol, a vector of stock symbols, or a data frame with stock symbols in the first column. The latter is passed to `tq_get` using the pipe (`%>%`). The function may take a few minutes to run because it is downloading the past ten years of daily open, high, low, close, volume, and adjusted stock prices for the entire S&P 500 index into one "tidy" data frame. Reviewing the results indicates that the prices were retrieved in entirety. The resulting "tibble" has `r nrow(sp500_stock_prices) %>% scales::comma()` rows and `r sp500_stock_prices$symbol %>% unique() %>% length()` unique symbols. 
+Next, the historical stock prices are needed for each stock within the S&P 500 index. The stock prices are easy to retrieve at scale using the function, `tq_get`, with the "get" option, `get = "stock.prices"`. `tq_get` is a wrapper for `quantmod::getSymbols`, which enables passing the underlying function parameters `from` and `to`. The input to `tq_get` is `data`, which can be a single stock symbol, a vector of stock symbols, or a data frame with stock symbols in the first column. The latter is passed to `tq_get` using the pipe (`%>%`). The function may take a few minutes to run because it is downloading the past ten years of daily open, high, low, close, volume, and adjusted stock prices for the entire S&P 500 index into one "tidy" data frame. Reviewing the results indicates that the prices were retrieved in entirety. The resulting "tibble" has `r nrow(sp500_stock_prices) %>% scales::comma()` rows and `r sp500_stock_prices$symbol %>% unique() %>% length()` unique symbols. 
 
 ```{r, eval = F}
 sp500_stock_prices <- sp500 %>%
@@ -231,7 +261,7 @@ dim(sp500_stock_prices)
 
 \hspace{20 mm}
 
-Next, the _split-apply-combine_ framework is used to group the prices by stock symbol and to calculate the logarithmic daily returns. The transform is applied using `tq_transform`, which is used in situations where periodicity changes (or can change). The `quantmod` OHLC (open, high, low, close) notation is used to collect the adjusted prices (`ohlc_fun = Ad`) and send these prices to the `periodReturn` function (`transform_fun = periodReturn`). The additional arguments `period = "daily"` and `type = "log"` are passed to the transformation function, `periodReturn`. The daily log returns (DLR) for each of the `r sp500_returns$symbol %>% unique() %>% length()` groups of stock symbols is generated below.
+Next, the prices are grouped by stock symbol to calculate the logarithmic daily returns for each stock. The transform is applied using `tq_transform`, which is used in situations where periodicity changes (or can change). The `quantmod` OHLC (open, high, low, close) notation is used to collect the adjusted prices (`ohlc_fun = Ad`) and send these prices to the `periodReturn` function (`transform_fun = periodReturn`). The additional arguments `period = "daily"` and `type = "log"` are passed to the transformation function, `periodReturn`. The daily log returns (DLR) for each of the `r sp500_returns$symbol %>% unique() %>% length()` groups of stock symbols is generated below.
 
 ```{r, eval = F}
 sp500_returns <- sp500_stock_prices %>%
@@ -269,7 +299,7 @@ dim(sp500_stats)
 
 \hspace{20 mm}
 
-Finally, we have the data needed to visualize risk versus reward. A plot of the mean daily log returns (MDLR) versus the standard deviation of daily log returns (SDDLR) shows the relationship. Note that observations (stocks) with fewer than five years of trading days (5 years x 252 trade days per year) are removed from the visualization to yield a long-run perspective. 
+Finally, the data needed to visualize risk versus reward is complete. A plot of the mean daily log returns (MDLR) versus the standard deviation of daily log returns (SDDLR) shows the relationship. Note that observations (stocks) with fewer than five years of trading days (5 years x 252 trade days per year) are removed from the visualization to yield a long-run perspective. 
 
 ```{r, fig.width=5, fig.height=3.5, fig.align="center"}
 sp500_stats %>%
@@ -287,36 +317,124 @@ sp500_stats %>%
 By comparing an entire basket of stocks, reasonable trading strategies can be developed. For example, creating a portfolio that minimizes volatility may result in higher performance over the long run. This is easily seen in the trend line indicating an inverse trend between volatility (SDDLR) and returns (MDLR). Further, once trading strategies are developed, screening is easily implemented by filtering the data set.
 
 ```{r, eval=FALSE}
-sp500_stats %>%
+sp500_high_performers <- sp500_stats %>%
     filter(Observations >= 252 * 5,
            Stdev <= 0.02,
            ArithmeticMean >= 0.0005) %>%
-    arrange(desc(ArithmeticMean)) %>%
+    arrange(desc(ArithmeticMean)) 
+sp500_high_performers %>%
     select(1:5) %>%
     head()
 ```
 
 ```{r, echo=FALSE, results="asis"}
-x <- sp500_stats %>%
+sp500_high_performers <- sp500_stats %>%
     filter(Observations >= 252 * 5,
            Stdev <= 0.02,
            ArithmeticMean >= 0.0005) %>%
-    arrange(desc(ArithmeticMean)) %>%
+    arrange(desc(ArithmeticMean)) 
+x <- sp500_high_performers %>%
     select(1:5) %>%
     head()
 
 kable(x, format = "latex", align = 'c', booktabs = TRUE, digits = 5)
-dim(sp500_stats %>%
-    filter(Observations >= 252 * 5,
-           Stdev <= 0.02,
-           ArithmeticMean >= 0.0005))
+dim(sp500_high_performers)
 ```
 
 \hspace{20 mm}
 
-## Example 2: Evaluating Performance of Multiple Portfolio Blends
+## Example 2: Visualizing Return Consistency Among "High Performers"
 
-Portfolio aggregation is a useful technique to reduce risk while maintaining acceptable returns. In this example, the goal is to evaluate a few blended portfolios of "FANG" stocks ("FB", "AMZN", "NFLX", and "GOOG"). \footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.} However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this could be applied to an entire index of assets and hundreds of weighted blends.  
+Example 1 can be expanded on the notion that volatility is a factor that the market tends to penalize. In this example, the goal is to visualize returns of the top ranked prospects from Example 1 to determine if the group is consistently growing. This example will introduce a new package called `purrr`, which is used to map functions to "nested" data frames. 
+
+Start with a question: _Of the best stocks from Example 1, which offer the most consistent growth?_ 
+
+The easiest way to answer this question is to visualize the mean daily log returns (MDLR) by year. Collecting the means by year can be accomplished a number of ways. The `purrr` package offers a new approach by applying functions to data frames similar to the `apply` function in base R. The nice thing about `map` is that if a function can be applied to one group of the data, it can be "mapped" to many groups. This example follows the followings steps:
+
+1. Retrieve the symbols of the top _n_ performers. The example uses the top 10, but any number can be selected.
+2. Filter and "nest" the returns for the top performers. 
+3. Create a custom function to map to each of the nested "tibbles".
+4. Map the custom function to the "tibble".
+5. Unnest the data frame
+6. Visualize the results
+
+
+First, get the symbols of the top performers. The `top_n` function can be used. 
+
+```{r}
+n <- 10
+high_performers <- sp500_high_performers %>%
+    ungroup() %>%
+    select(symbol, ArithmeticMean) %>%
+    top_n(n = n) %>%
+    .$symbol
+high_performers
+```
+
+Next, filter the SP500 returns data frame to only the stocks of interest and "nest" the data frame. Nesting works on groups, so all of the data that is grouped on gets rolled into a list column.  
+
+
+```{r}
+high_performer_returns_nested <- sp500_returns %>%
+    filter(symbol %in% high_performers) %>%
+    nest()
+high_performer_returns_nested
+```
+
+Once the data frame is nested, create a custom function to apply to each of the nested tibbles. The function `calculate_mdlr_by_year` transforms the daily log returns to mean daily log returns by year. It takes a set of daily log returns and returns the mean daily log returns by year.
+
+```{r}
+calculate_mdlr_by_year <- function(dlr) {
+    dlr %>%
+        mutate(year = year(date)) %>%
+        group_by(year) %>%
+        summarize(mdlr.by.year = mean(dlr))
+}
+```
+
+Map the custom function, `calculate_mdlr_by_year`, to the nested data frame, `high_performer_returns_nested`. This is done using `mutate` with `map`. The "data" column is no longer needed, so it is removed with `select`. 
+
+```{r}
+high_performer_returns_mapped <- high_performer_returns_nested %>%
+    mutate(mdlr.by.year = map(data, calculate_mdlr_by_year)) %>%
+    select(-data)
+high_performer_returns_mapped
+```
+
+Now, `unnest` the "mdlr.by.year" column to return the MDLR by year for each of the high performing stocks.
+
+```{r}
+high_performer_returns_mapped %>%
+    unnest()
+```
+
+Finally, visualize the results using `ggplot2`.
+
+```{r}
+high_performer_returns_mapped %>%
+    unnest() %>%
+    ggplot(aes(x = year, y = mdlr.by.year, color = symbol)) +
+    geom_hline(yintercept = 0, color = palette_light()[[1]]) +
+    geom_line(size = 1) +
+    geom_point(size = 2) +
+    geom_smooth(method = "lm", se = FALSE, color = "blue") +
+    scale_color_tq() +
+    theme_tq() +
+    facet_wrap(~ symbol, ncol = 5) +
+    labs(title = "Comparing the Return Consistency of High Performers",
+         y = "Mean Daily Log Returns (MDLR)", color = "") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          axis.title.x = element_blank())
+```
+
+The mean daily log returns when averaged by year yields a different picture that what the results of Example 1 portrayed. Some of the stocks are very consistent while others have downward trends or have negative returns in multiple years indicating investment losses. 
+
+Further, with the data science modeling workflow discussed in _R for Data Science_, a financial analyst or engineer can create screening metrics by running regressions for slope and intercept (refer to `broom` package), number of times an investment falls below zero, standard deviation in MDLR by year, and more. Screening investments within an entire index or exchange becomes relatively easy even with complex metrics.   
+
+
+## Example 3: Evaluating Performance of Multiple Portfolio Blends
+
+Portfolio aggregation is a useful technique to reduce risk while maintaining acceptable returns. In this example, the goal is to evaluate a few blended portfolios of "FANG" stocks ("FB", "AMZN", "NFLX", and "GOOG"). However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this could be applied to an entire index of assets and hundreds of weighted blends.  
 
 Throughout the past half decade, the FANG stocks have experienced a unique combination of high returns and high volatility, making the FANG stocks a good example to use in a blended portfolio that reduces downside risk but yields high returns. 
 
@@ -349,7 +467,7 @@ dim(FANG)
 
 \hspace{20 mm}
 
-Next, transform to monthly returns using the _split-apply-combine_ framework. Use `group_by` to group on the "symbol" column, and `tq_transform` to transform the adjusted prices to monthly arithmetic returns. Note that "FB" was only actively traded for a full year beginning in 2013, so the investments will be compared starting from that year.
+Next, transform to monthly returns. Use `group_by` to group on the "symbol" column, and `tq_transform` to transform the adjusted prices to monthly arithmetic returns. Note that "FB" was only actively traded for a full year beginning in 2013, so the investments will be compared starting from that year.
 
 ```{r, eval = FALSE}
 FANG_returns <- FANG %>%
@@ -429,7 +547,7 @@ Weighted portfolio aggregation involves three steps:
 
 #### Step 1: Repeat the stock returns table _n_ times, once for each portfolio desired
 
-Use `tq_repeat_df` to repeat `n = 4` times. This function extends the data frame row-wise, adding an index column named "portfolio" and grouping by "portfolio". We now have four portfolio groups that will be evaluated. 
+Use `tq_repeat_df` to repeat `n = 4` times. This function extends the data frame row-wise, adding an index column named "portfolio" and grouping by "portfolio". Four portfolio groups are generated. 
 
 ``` {r, eval=FALSE}
 FANG_returns_mult <- FANG_returns %>%
@@ -566,7 +684,7 @@ FANG_portfolio_wealth %>%
 
 # Conclusion
 
-With the creation of the "xts" and "tidyverse" systems, high performance tools are available to perform financial analysis and to scale data science in R. Because of the separation in development of the two systems, the ability to scale financial analysis is limited. `tidyquant` unlocks the _split-apply-combine_ framework of the "tidyverse", increasing the scale at which financial analyses can now be performed. 
+With the creation of the "xts" and "tidyverse" systems, high performance tools are available to perform financial analysis and to scale data science in R. Because of the separation in development of the two systems, the ability to scale financial analysis is limited. `tidyquant` unlocks the data science workflow for financial applications, increasing the scale and modeling capability of financial analyses. 
 
 As scale increases, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. `tidyquant` is being built with extendibility in mind, allowing for potential integration with Apache Spark\textsuperscript{TM} (large-scale data processing), `multidplyr` (localized multicore parallel processing), and even Bloomberg Terminal\textsuperscript{\textregistered} integration for access to better performance and higher quality data. Further, with advances in artificial intelligence and machine learning, the potential for financial analysis at scale is in its infancy. This is an exciting time. As `tidyquant`, complimentary R software packages, and technology in general evolves, financial analysis will certainly benefit from the powerful speed, scale, and autonomous learning that is rapidly becoming available.
 
