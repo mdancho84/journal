@@ -44,11 +44,11 @@ FANG <- readRDS("data/fang.rds")
 
 # Status of Financial Analysis Tools in R
 
-The R programming language has seen immense growth in both popularity and tools over the past several years primarily driven by the open-source nature of the R language and innovation in the field of data science. The sub-segment of financial analysis in R is no different. [TimelyPortfolio](https://timelyportfolio.github.io/rCharts_time_series/history.html) maintains a timeline of the major advances in R time series graphics, which highlights the inception of several of the most influential R financial and time series packages. Several packages are worth describing in more detail as these create much of the current foundation of R in Finance.
+The R programming language has seen immense growth in both popularity and tools over the past several years, primarily driven by the open-source nature of the R language and innovation in the field of data science. The sub-segment of financial analysis in R is no different. [TimelyPortfolio](https://timelyportfolio.github.io/rCharts_time_series/history.html) maintains a timeline of the major advances in R time series graphics, which highlights the inception of several of the most influential R financial and time series packages. Several packages are worth describing in more detail as these create much of the current foundation of R in Finance.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=14cm]{img/timeline}
+  \includegraphics[width=13cm, height=7cm]{img/timeline}
   \timeline
 \end{figure}
 
@@ -97,11 +97,11 @@ The `lubridate` package includes functions to manage date and date-time objects 
 
 # Different Data Structures, Each with Advantages
 
-All of the major financial packages work within the "xts" system, which is specifically designed for time series analysis. The system works very well. The extensible time series, "xts", data structure is much like a numeric "matrix". The primary difference is that row names consist of the date or date-time information. The objects can be subset by date or transformed to different periodicity very easily using a wide variety of flexible functions built to operate within the "xts" time-based system. Because of its focus, flexibility and design, the "xts" system manages single observations of the numeric time-based data extremely well. Multiple observations are handled by merging columns for different groups in a "wide" format, which is different than the "tidy" data representation (i.e. "long" format). The system has been designed to manage this data representation.
+All of the major financial packages work within the "xts" system, which is specifically designed for time series analysis. The system works very well. The extensible time series, "xts", data structure is similar to a numeric "matrix". The primary difference is that row names consist of the date or date-time information. The objects can be subset by date or transformed to different periodicity very easily using a wide variety of flexible functions built to operate within the "xts" time-based system. Because of its focus, flexibility and design, the "xts" system manages single observations of the numeric time-based data extremely well. Multiple observations are handled by merging columns for different groups in a "wide" format, which is different than the "tidy" data representation (i.e. "long" format). The system has been designed to manage this data representation.
 
 Much of the recent innovation in data science has occurred within the "tidy" ecosystem. With the entrance of the "tidyverse", grouping and iteratively applying functions (i.e. scaling analysis) has become easy, efficient, and a core principle. Further, advances in date and date-time functionality have enabled management of time series data within the "tibble" data structure. As the data science field grows, more innovative functionality will be developed within the "tidy" ecosystem, much of which will be (and is already) useful to the field of financial analysis.
 
-The two systems, "xts" and the "tidyverse", have advantages that are needed within the realm of financial analysis. The "xts" system has the infrastructure to perform financial analytics. The "tidyverse" has the functions and data representation to seamlessly scale analysis using the data science workflow. Unfortunately, the two systems do not work well together. The "xts" system has underlying dependencies on the "matrix" data structure whereas the "tidy" ecosystem is built on top of the "tibble" ("tidy" data frame) data structure. The "matrix" structure is _homogenous_ meaning each column in the frame must hold the same data type. In R, coercion rules takeover when data types are combined within a "matrix". For example, combining a character and a numeric class will result in a matrix of character class. As a result, the "xts" system can not be formatted in a "tidy" structure with each variable as a column, each observation as a row, and each value in a cell. The solution is to merge data sets together keeping the column names as the observation. This works well in the "xts" system, but presents problems in the "tidyverse" system since the data is not represented following the "tidy" principles. Conversely, the "tibble" structure is _heterogenous_ meaning each column can contain a different data type. This works extremely well for grouping observations together. For example, a "tibble" can contain symbols in one column and daily prices in another column. This enables applying functions to groups (e.g. symbol) for scaling analyses. The end result is two excellent systems that do not communicate easily. Without communication between each system the full potential of financial analysis within R is limited.
+The two systems have advantages that are needed within the realm of financial analysis. The "xts" system has the infrastructure to perform financial analytics. The "tidyverse" has the functions and data representation to seamlessly scale analysis using the data science workflow. Unfortunately, the two systems do not work well together. The "xts" system has underlying dependencies on the "matrix" data structure whereas the "tidy" ecosystem is built on top of the "tibble" ("tidy" data frame) data structure. The "matrix" structure is _homogenous_, each column in the matrix must hold the same data type. In R, coercion rules take over when data types are combined within a "matrix". For example, combining a character and a numeric class will result in a character only matrix. As a result, the "xts" system can not be formatted in a "tidy" structure with each variable as a column, each observation as a row, and each value in a cell. The solution is to merge data sets together keeping the column names as the observation. This works well in the "xts" system, but presents problems in the "tidyverse" system since the data is not represented following the "tidy" principles. Conversely, the "tibble" structure is _heterogenous_, each column can contain a different data type. This works extremely well for grouping observations together. For example, a "tibble" can contain symbols in one column and daily prices in another column. This enables applying functions to groups (e.g. symbol) for scaling analyses. The end result is two excellent systems that do not communicate easily. Without communication between systems, the full potential of financial analysis within R is limited.
 
 To solve this problem, the `tidyquant` package was developed to integrate many of the "xts" based financial analysis packages into the "tidyverse". The central motivation behind the integration is to enable the user to gain the benefits of both systems. The `tidyquant` package works with "tidy" input and output, fitting seamlessly within the "tidy" ecosystem allowing for analysis to follow the data science workflow discussed in detail in _R for Data Science_ \citep{R4DS2017}. Internally, `tidyquant` leverages the "xts" system as the engine to perform financial computations. This enables almost all of the functionality of `quantmod`, `TTR`, `PerformanceAnalytics`, `xts` and `zoo` to be used integrally (without switching back and forth) within the "tidy" ecosystem.  
 
@@ -110,14 +110,15 @@ In the next section, an analysis is performed with the "tidyverse" to illustrate
 
 # Benefits of the "tidyverse"
 
-One of the primary benefits to the "tidyverse" is the ability to work with grouped data sets. The core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is that the framework enables scaling analyses from one group to many groups and comparing each group to each other. A simple example using the `FANG` data set illustrates this framework.  
+One of the primary benefits of the "tidyverse" is the ability to work with grouped data sets. The core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is that the framework enables scaling analyses from one group to many groups and comparing each group to each other. A simple example using the `FANG` data set illustrates this framework.  
 
 Start with a question: _What is the historical performance for the FANG tech stocks?_
 
 ```{r}
-# Load the tidyquant and the FANG data set in R.
-library(tidyquant) # Will use only tidyverse functionality in this example
-data("FANG")       # From tidyquant package
+# Load the tidyquant package to access the FANG data set.
+# No tidyquant functions will be used in this example.
+library(tidyquant) 
+data("FANG")       
 ```
 
 Next, view the data set. The data consists of the historical daily stock prices for the "FANG"\footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.} tech stocks ("FB", "AMZN", "NFLX", and "GOOG") spanning from the beginning of 2013 to the end of 2016.  
@@ -137,10 +138,12 @@ dim(FANG)
 
 Historical performance is a function of the period returns (i.e. percentage change between current price and previous price). A wealth index is often used to assess the investment growth, which is the product of the period returns and asset value during the previous period. The data workflow is split into two steps.
 
-1. Calculate the periodic returns 
-2. Calculate cumulative performance
+1. Calculate the period returns 
+2. Calculate the cumulative performance
 
-Calculate the periodic returns. The lag is needed to line up the previous period return with the current period return. The difference is then taken, and from the difference the period return is the percentage change from the initial value. Only the "symbol", "date" and "adjusted" price columns are needed to start, so a `select` statement removes the unnecessary columns. Then the data is grouped by "symbol" using the `group_by` function. The `mutate` function adds calculated columns to a data frame. The "lag" is calculated using the `lag` function from `dplyr`. The "diff" is the "adjusted" closing price minus the "lag". The "period.returns" is the percentage change from the "adjusted", which is "diff" divided by "adjusted". The `replace_na` function is used to remove `NA` values with zero. Note that an ungrouped "tibble" is returned due to the `replace_na` function. 
+Calculate the period returns. The lag is needed to line up the previous period return with the current period return. The difference is then taken, and from the difference the period return is calculated as the percentage change from the initial value. 
+
+For a more granular look at the code, each of the functions do the following. Only the "symbol", "date" and "adjusted" price columns are needed to start, so a `select` statement removes the unnecessary columns. Then the data is grouped by "symbol" using the `group_by` function. The `mutate` function adds calculated columns to a data frame. The "lag" is calculated using the `lag` function from `dplyr`. The "diff" is the "adjusted" closing price minus the "lag". The "period.returns" is the percentage change from the "adjusted", which is "diff" divided by "adjusted". The `replace_na` function is used to remove `NA` values with zero. Note that an ungrouped "tibble" is returned due to the `replace_na` function. 
 
 ```{r, eval = FALSE}
 FANG_returns <- FANG %>%
@@ -169,7 +172,7 @@ dim(FANG_returns)
 
 \hspace{20 mm}
 
-Now, the wealth index can be calculated. The wealth index is the cumulative product of the period returns multiplied by the initial investment value. An initial investment of 10K USD is used as an example.
+Now, the wealth index can be calculated. The wealth index is the cumulative product of the period returns multiplied by the initial investment value. An initial investment of $10K USD is used as an example.
 
 ```{r, eval = FALSE}
 initial_investment <- 10000
@@ -345,11 +348,11 @@ dim(sp500_high_performers)
 
 ## Example 2: Visualizing Return Consistency Among "High Performers"
 
-Example 1 can be expanded on the notion that volatility is a factor that the market tends to penalize. In this example, the goal is to visualize returns of the top ranked prospects from Example 1 to determine if the group is consistently growing. This example will introduce a new package called `purrr`, which is used to map functions to "nested" data frames. 
+Example 1 can be expanded upon using the notion that excessive volatility is a factor that the market tends to penalize. In this example, the goal is to visualize returns of the top ranked prospects from Example 1 to determine if the group is consistently growing. This example will introduce a new package called `purrr`, which is used to map functions to "nested" data frames. 
 
 Start with a question: _Of the best stocks from Example 1, which offer the most consistent growth?_ 
 
-The easiest way to answer this question is to visualize the mean daily log returns (MDLR) by year. Collecting the means by year can be accomplished a number of ways. The `purrr` package offers a new approach by applying functions to data frames similar to the `apply` function in base R. The nice thing about `map` is that if a function can be applied to one group of the data, it can be "mapped" to many groups. This example follows the followings steps:
+The easiest way to answer this question is to visualize the mean daily log returns (MDLR) by year. Collecting the means by year can be accomplished in a number of ways. The `purrr` package offers a new approach by applying `map` functions to tibble groups similar to the `apply` function in base R. The nice thing about `map` is that if a function can be applied to one group of the data, it can be "mapped" to many groups. This example will proceed as follows:
 
 1. Retrieve the symbols of the top _n_ performers. The example uses the top 10, but any number can be selected.
 2. Filter and "nest" the returns for the top performers. 
@@ -361,27 +364,41 @@ The easiest way to answer this question is to visualize the mean daily log retur
 
 First, get the symbols of the top performers. The `top_n` function can be used. 
 
-```{r}
+```{r, eval=FALSE}
 n <- 10
 high_performers <- sp500_high_performers %>%
     ungroup() %>%
-    select(symbol, ArithmeticMean) %>%
-    top_n(n = n) %>%
-    .$symbol
+    select(symbol) %>%
+    top_n(n = n)
 high_performers
 ```
 
-Next, filter the SP500 returns data frame to only the stocks of interest and "nest" the data frame. Nesting works on groups, so all of the data that is grouped on gets rolled into a list column.  
+```{r, echo=FALSE, results="asis"}
+n <- 10
+high_performers <- sp500_high_performers %>%
+    ungroup() %>%
+    select(symbol) %>%
+    top_n(n = n)
+
+high_performers %>%
+    kable(format = "latex", align = 'c', booktabs = TRUE)
+```
+
+\hspace{20 mm}
+
+Next, filter the S&P 500 returns tibble to only the stocks of interest and "nest" the tibble. Nesting works on groups, so all of the data that is grouped on gets wrapped up into a list column.  
 
 
 ```{r}
 high_performer_returns_nested <- sp500_returns %>%
-    filter(symbol %in% high_performers) %>%
+    filter(symbol %in% high_performers$symbol) %>%
     nest()
 high_performer_returns_nested
 ```
 
-Once the data frame is nested, create a custom function to apply to each of the nested tibbles. The function `calculate_mdlr_by_year` transforms the daily log returns to mean daily log returns by year. It takes a set of daily log returns and returns the mean daily log returns by year.
+\hspace{20 mm}
+
+Once the tibble is nested, create a custom function to apply to each of the nested tibbles. The function `calculate_mdlr_by_year` transforms the daily log returns to mean daily log returns by year.
 
 ```{r}
 calculate_mdlr_by_year <- function(dlr) {
@@ -403,14 +420,24 @@ high_performer_returns_mapped
 
 Now, `unnest` the "mdlr.by.year" column to return the MDLR by year for each of the high performing stocks.
 
-```{r}
+```{r, eval=FALSE}
 high_performer_returns_mapped %>%
-    unnest()
+    unnest() %>%
+    head()
 ```
+
+```{r, echo=FALSE, results="asis"}
+high_performer_returns_mapped %>%
+    unnest() %>%
+    head() %>%
+    kable(format = "latex", align = 'c', booktabs = TRUE)
+```
+
+\hspace{20 mm}
 
 Finally, visualize the results using `ggplot2`.
 
-```{r}
+```{r, fig.width=5, fig.height=3.8, fig.align="center"}
 high_performer_returns_mapped %>%
     unnest() %>%
     ggplot(aes(x = year, y = mdlr.by.year, color = symbol)) +
@@ -421,28 +448,28 @@ high_performer_returns_mapped %>%
     scale_color_tq() +
     theme_tq() +
     facet_wrap(~ symbol, ncol = 5) +
-    labs(title = "Comparing the Return Consistency of High Performers",
+    labs(title = "Comparing the Consistency of High Performers",
          y = "Mean Daily Log Returns (MDLR)", color = "") +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+    theme(axis.text.x = element_text(angle = 60, hjust = 1),
           axis.title.x = element_blank())
 ```
 
-The mean daily log returns when averaged by year yields a different picture that what the results of Example 1 portrayed. Some of the stocks are very consistent while others have downward trends or have negative returns in multiple years indicating investment losses. 
+The mean daily log returns when averaged by year yields a different picture then what the results of Example 1 portrayed. Some of the stocks are very consistent while others have downward trends or have negative returns in multiple years indicating a lack of consistency. 
 
-Further, with the data science modeling workflow discussed in _R for Data Science_, a financial analyst or engineer can create screening metrics by running regressions for slope and intercept (refer to `broom` package), number of times an investment falls below zero, standard deviation in MDLR by year, and more. Screening investments within an entire index or exchange becomes relatively easy even with complex metrics.   
+For further analysis, with the data science modeling workflow discussed in _R for Data Science_, a financial analyst or engineer can create screening metrics by running regressions for slope and intercept (refer to the `broom` package), counting the times an investment falls below zero, calculating standard deviation in MDLR by year, and more. Screening investments within an entire index or exchange becomes relatively easy even with complex metrics.   
 
 
 ## Example 3: Evaluating Performance of Multiple Portfolio Blends
 
-Portfolio aggregation is a useful technique to reduce risk while maintaining acceptable returns. In this example, the goal is to evaluate a few blended portfolios of "FANG" stocks ("FB", "AMZN", "NFLX", and "GOOG"). However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this could be applied to an entire index of assets and hundreds of weighted blends.  
+Portfolio aggregation is a useful technique to reduce risk while maintaining acceptable returns. In this example, the goal is to evaluate a few blended portfolios of FANG stocks. However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this could be applied to an entire index of assets and hundreds of weighted blends.  
 
-Throughout the past half decade, the FANG stocks have experienced a unique combination of high returns and high volatility, making the FANG stocks a good example to use in a blended portfolio that reduces downside risk but yields high returns. 
+Throughout the past half decade, the FANG stocks have experienced a unique combination of high returns and high volatility, making them a good example to use in a blended portfolio that reduces downside risk but yields high returns. 
 
 \pagebreak
 
 Start with a question: _What portfolio blends reduce downside risk while maximizing return?_
 
-Several portfolio blends will be evaluated to see the historical effect on returns since 2013: \footnote{2013 was the first full year of trading data for FB. Portfolio aggregation prior to 2013 cannot be analyzed with FB.}
+Several portfolio blends will be evaluated to see the historical effect on returns since 2013: \footnote{2013 was the first full year of trading data for FB. Portfolio aggregation prior to 2013 using FB cannot be analyzed.}
 
 * Portfolio 1: 50% FB, 25% AMZN, 25% NFLX, 0% GOOG
 * Portfolio 2: 0%  FB, 50% AMZN, 25% NFLX, 25% GOOG
@@ -547,7 +574,7 @@ Weighted portfolio aggregation involves three steps:
 
 #### Step 1: Repeat the stock returns table _n_ times, once for each portfolio desired
 
-Use `tq_repeat_df` to repeat `n = 4` times. This function extends the data frame row-wise, adding an index column named "portfolio" and grouping by "portfolio". Four portfolio groups are generated. 
+Use `tq_repeat_df` to repeat `n = 4` times. This function extends the tibble row-wise, adding an index column named "portfolio" and grouping by "portfolio". Four portfolio groups are generated. 
 
 ``` {r, eval=FALSE}
 FANG_returns_mult <- FANG_returns %>%

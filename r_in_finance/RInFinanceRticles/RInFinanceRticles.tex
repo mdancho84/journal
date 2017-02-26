@@ -1,6 +1,6 @@
 % !TeX root = RJwrapper.tex
-\title{New Tools for Performing Financial Analysis Using the ``Tidy''
-Split-Apply-Combine Framework}
+\title{New Tools for Performing Financial Analysis Within the ``Tidy''
+Ecosystem}
 \author{by Matt Dancho, Davis Vaughan}
 
 \maketitle
@@ -10,13 +10,14 @@ Financial analysis and data science in the R programming language have
 followed separate paths resulting in two important systems: ``xts'' and
 ``tidyverse''. The advantage of the ``xts'' system is in the management
 of time series financial data. The advantage of the ``tidyverse'' system
-is in the ability to scale analyses using the \emph{split-apply-combine}
-framework. Because of the separation in development, the two systems are
+is in the ability to implement a set of packages that have a uniform
+structure and data representation that works within the data science
+workflow. Because of the separation in development, the two systems are
 difficult to use together, limiting the full potential of financial
 analysis within R. The \texttt{tidyquant} package solves this problem by
 integrating several of the best financial analysis packages with the
-``tidy'' ecosystem. The integration unlocks the
-\emph{split-apply-combine} framework to scale analyses.
+``tidy'' ecosystem. The integration unlocks the data science workflow,
+which enables modeling and scaling analyses in a ``tidy'' way.
 
 Two usage cases are discussed to illustrate the benefits of
 \texttt{tidyquant}. The first example uses the scaling capabilities to
@@ -31,7 +32,7 @@ blends. These examples only scratch the surface of what is possible with
 R}\label{status-of-financial-analysis-tools-in-r}
 
 The R programming language has seen immense growth in both popularity
-and tools over the past several years primarily driven by the
+and tools over the past several years, primarily driven by the
 open-source nature of the R language and innovation in the field of data
 science. The sub-segment of financial analysis in R is no different.
 \href{https://timelyportfolio.github.io/rCharts_time_series/history.html}{TimelyPortfolio}
@@ -43,7 +44,7 @@ of R in Finance.
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=14cm]{img/timeline}
+  \includegraphics[width=13cm, height=7cm]{img/timeline}
   \timeline
 \end{figure}
 
@@ -81,13 +82,17 @@ In parallel with the progression in the R in Finance community,
 developers at \emph{RStudio} have been developing useful tools for data
 science in R, namely the ``tidyverse''. The ``tidyverse'' or ``tidy''
 ecosystem is a collection of packages that fundamentally and
-philosophically work together utilizing ``tidy'' data, which is defined
-in \emph{Tidy Data} \citep{tidy-data}. Further, the ``tidyverse''
-packages and the data analysis workflow are documented in the online
-text, \emph{R for Data Science} \citep{R4DS2017}, which is the de facto
-manual for data scientists beginning with the R programming language.
-The ``tidyverse'' includes several packages worth describing in more
-detail.
+philosophically work together utilizing a common ``tidy'' data
+representation, which is defined in \emph{Tidy Data} \citep{tidy-data}.
+To summarize, the ``tidy'' data representation has \emph{each variable
+as a column, each observation as a row, and each value in a
+cell}.\footnote{The "tidy" data format is often referred to as "long" format versus "wide" format because the observations within the data set extend row-wise versus column-wise. }
+The ``tidyverse'' packages all share a common API design and fit
+together seamlessly within the data science workflow. Additionally, the
+``tidyverse'' packages are documented in the online text, \emph{R for
+Data Science} \citep{R4DS2017}, which is the de facto manual for data
+scientists beginning with the R programming language. The ``tidyverse''
+includes several packages worth describing in more detail.
 
 \begin{figure}[htbp]
   \centering
@@ -98,15 +103,21 @@ detail.
 \subsection{dplyr / tidyr}\label{dplyr-tidyr}
 
 The \texttt{dplyr} and \texttt{tidyr} packages provide tools to clean
-and manipulate data using the \emph{split-apply-combine} framework
-popularized by Hadley Wickham in \emph{The Split-Apply-Combine Strategy
-for Data Analysis} \citep{plyr}. The major advances were threefold.
-First, the packages simplified and made consistent many of the most
-common data manipulation and summarization tasks in R. Second, the
-packages enable the \emph{split-apply-combine} framework to work with
-grouped data sets. Third, the packages incorporated the use of the pipe
-(\texttt{\%\textgreater{}\%}) from the \texttt{magrittr} package,
-enabling functional verbs to follow an easy, efficient, and
+and manipulate data. Historically, the \texttt{plyr} package, the
+precursor to \texttt{dplyr}, was developed as a mechanism to implement
+the \emph{split-apply-combine} framework popularized by Hadley Wickham
+in \emph{The Split-Apply-Combine Strategy for Data Analysis}
+\citep{plyr}. The \texttt{dplyr} package advanced this concept by
+implementing this framework internally along with providing many
+additional tools that work naturally within the framework. The
+\texttt{tidyr} package enables users to format the data in a ``tidy''
+way. The major advances were threefold. First, the packages simplified
+and made consistent many of the most common data manipulation and
+summarization tasks in R. Second, the packages implement the
+\emph{split-apply-combine} framework internally allowing users to work
+with grouped and nested data sets. Third, the packages incorporated the
+use of the pipe (\texttt{\%\textgreater{}\%}) from the \texttt{magrittr}
+package enabling functional verbs to follow an easy, efficient, and
 human-readable workflow.
 
 \subsection{purrr}\label{purrr}
@@ -145,22 +156,26 @@ dates, and many more complex tasks that are essential to financial
 analysis. Further, combining \texttt{lubridate} with \texttt{ggplot2}
 enables graphical visualization using dates and date-times.
 
-\section{Divergent Philosophies, Each with
-Advantages}\label{divergent-philosophies-each-with-advantages}
+\section{Different Data Structures, Each with
+Advantages}\label{different-data-structures-each-with-advantages}
 
 All of the major financial packages work within the ``xts'' system,
 which is specifically designed for time series analysis. The system
 works very well. The extensible time series, ``xts'', data structure is
-much like a numeric matrix. The only major visible difference between
-the two is that row names consist of the date or date-time information.
-The objects can be subset or transformed to different periodicity very
-easily. The disadvantage is that the application is strict to numeric
-data, but because of its focus it manages the numeric time-based data
-extremely well.
+similar to a numeric ``matrix''. The primary difference is that row
+names consist of the date or date-time information. The objects can be
+subset by date or transformed to different periodicity very easily using
+a wide variety of flexible functions built to operate within the ``xts''
+time-based system. Because of its focus, flexibility and design, the
+``xts'' system manages single observations of the numeric time-based
+data extremely well. Multiple observations are handled by merging
+columns for different groups in a ``wide'' format, which is different
+than the ``tidy'' data representation (i.e. ``long'' format). The system
+has been designed to manage this data representation.
 
-Much of the recent innovation in data analysis has occurred within the
-``tidy'' ecosystem. With the entrance of the ``tidyverse'', scaling
-analysis using the \emph{split-apply-combine} framework has become easy,
+Much of the recent innovation in data science has occurred within the
+``tidy'' ecosystem. With the entrance of the ``tidyverse'', grouping and
+iteratively applying functions (i.e.~scaling analysis) has become easy,
 efficient, and a core principle. Further, advances in date and date-time
 functionality have enabled management of time series data within the
 ``tibble'' data structure. As the data science field grows, more
@@ -168,13 +183,31 @@ innovative functionality will be developed within the ``tidy''
 ecosystem, much of which will be (and is already) useful to the field of
 financial analysis.
 
-The two systems, ``xts'' and the ``tidyverse'', are very different on a
-fundamental and philosophical level. Both have advantages that are
-needed within the realm of financial analysis, but the two systems do
-not work well together. The ``xts'' system is strictly numeric-based,
-while the ``tidy'' system is strictly data frame-based. Passing data
-between systems is difficult if not painful and without communication
-between each the full potential of financial analysis within R is
+The two systems have advantages that are needed within the realm of
+financial analysis. The ``xts'' system has the infrastructure to perform
+financial analytics. The ``tidyverse'' has the functions and data
+representation to seamlessly scale analysis using the data science
+workflow. Unfortunately, the two systems do not work well together. The
+``xts'' system has underlying dependencies on the ``matrix'' data
+structure whereas the ``tidy'' ecosystem is built on top of the
+``tibble'' (``tidy'' data frame) data structure. The ``matrix''
+structure is \emph{homogenous}, each column in the matrix must hold the
+same data type. In R, coercion rules take over when data types are
+combined within a ``matrix''. For example, combining a character and a
+numeric class will result in a character only matrix. As a result, the
+``xts'' system can not be formatted in a ``tidy'' structure with each
+variable as a column, each observation as a row, and each value in a
+cell. The solution is to merge data sets together keeping the column
+names as the observation. This works well in the ``xts'' system, but
+presents problems in the ``tidyverse'' system since the data is not
+represented following the ``tidy'' principles. Conversely, the
+``tibble'' structure is \emph{heterogenous}, each column can contain a
+different data type. This works extremely well for grouping observations
+together. For example, a ``tibble'' can contain symbols in one column
+and daily prices in another column. This enables applying functions to
+groups (e.g.~symbol) for scaling analyses. The end result is two
+excellent systems that do not communicate easily. Without communication
+between systems, the full potential of financial analysis within R is
 limited.
 
 To solve this problem, the \texttt{tidyquant} package was developed to
@@ -189,130 +222,189 @@ Science} \citep{R4DS2017}. Internally, \texttt{tidyquant} leverages the
 enables almost all of the functionality of \texttt{quantmod},
 \texttt{TTR}, \texttt{PerformanceAnalytics}, \texttt{xts} and
 \texttt{zoo} to be used integrally (without switching back and forth)
-within the ``tidy'' ecosystem. The primary benefit of this integration
-is the ability to implement the \emph{split-apply-combine} framework to
-scale complex analysis.
+within the ``tidy'' ecosystem.
 
-In the next section, the \emph{split-apply-combine} framework is
-discussed using non-financial data, followed by a demonstration of the
-\texttt{tidyquant} package to illustrate some of its key benefits within
-the realm of financial analysis.
+In the next section, an analysis is performed with the ``tidyverse'' to
+illustrate the benefits in manipulating grouped financial data. Then, in
+the final section, a demonstration of the \texttt{tidyquant} package is
+performed to illustrate some of its key benefits within the realm of
+financial analysis.
 
-\section{Split-Apply-Combine, The
-Concept}\label{split-apply-combine-the-concept}
+\section{\texorpdfstring{Benefits of the
+``tidyverse''}{Benefits of the tidyverse}}\label{benefits-of-the-tidyverse}
 
-The \emph{split-apply-combine} framework is described in \emph{The
-Split-Apply-Combine Strategy for Data Analysis} \citep{plyr}. To
-summarize, the core concept is to split a data set into groups, apply
-functions to independent groups, then recombine the results. The value
-in this approach is that the framework enables scaling analyses from one
-group to many groups and comparing each group to each other.
+One of the primary benefits of the ``tidyverse'' is the ability to work
+with grouped data sets. The core concept is to split a data set into
+groups, apply functions to independent groups, then recombine the
+results. The value in this approach is that the framework enables
+scaling analyses from one group to many groups and comparing each group
+to each other. A simple example using the \texttt{FANG} data set
+illustrates this framework.
 
-A simple example using the \texttt{mtcars} data set illustrates this
-framework. The \texttt{mtcars} data set includes the various attributes
-for 32 vehicles along with the fuel efficiency (MPG) of each vehicle.
-
-Start with a question: \emph{How does engine size affect fuel
-consumption?}
+Start with a question: \emph{What is the historical performance for the
+FANG tech stocks?}
 
 \begin{Schunk}
 \begin{Sinput}
-# Load the tidyverse and the mtcars data set in R.
-library(tidyverse)
-data("mtcars")
+# Load the tidyquant package to access the FANG data set.
+# No tidyquant functions will be used in this example.
+library(tidyquant) 
+data("FANG")       
 \end{Sinput}
 \end{Schunk}
 
-Next, view the data set. The \texttt{as\_tibble} function is used to
-convert to the ``tidy'' data frame structure. The data set consists of
-12 columns (features) and 32 rows (observations) related to various
-automobiles. Fortunately, the frame of the question narrows the analysis
-to two variables: ``mpg'', continuous numeric data describing the fuel
-efficiency of each vehicle, and ``cyl'', discrete numeric data
-indicating number of engine cylinders for each vehicle. The ``cyl'' data
-can be grouped to keep like observations together.
+Next, view the data set. The data consists of the historical daily stock
+prices for the
+``FANG''\footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.}
+tech stocks (``FB'', ``AMZN'', ``NFLX'', and ``GOOG'') spanning from the
+beginning of 2013 to the end of 2016.
 
 \begin{Schunk}
 \begin{Sinput}
-mtcars <- mtcars %>%
-    rownames_to_column(var = "model") %>%
-    as_tibble()
-head(mtcars)
+head(FANG)
+dim(FANG)
 \end{Sinput}
 \end{Schunk}
 
-\begin{tabular}{cccccccccccc}
+\begin{tabular}{cccccccc}
 \toprule
-model & mpg & cyl & disp & hp & drat & wt & qsec & vs & am & gear & carb\\
+symbol & date & open & high & low & close & volume & adjusted\\
 \midrule
-Mazda RX4 & 21.0 & 6 & 160 & 110 & 3.90 & 2.620 & 16.46 & 0 & 1 & 4 & 4\\
-Mazda RX4 Wag & 21.0 & 6 & 160 & 110 & 3.90 & 2.875 & 17.02 & 0 & 1 & 4 & 4\\
-Datsun 710 & 22.8 & 4 & 108 & 93 & 3.85 & 2.320 & 18.61 & 1 & 1 & 4 & 1\\
-Hornet 4 Drive & 21.4 & 6 & 258 & 110 & 3.08 & 3.215 & 19.44 & 1 & 0 & 3 & 1\\
-Hornet Sportabout & 18.7 & 8 & 360 & 175 & 3.15 & 3.440 & 17.02 & 0 & 0 & 3 & 2\\
-Valiant & 18.1 & 6 & 225 & 105 & 2.76 & 3.460 & 20.22 & 1 & 0 & 3 & 1\\
+FB & 2013-01-02 & 27.44 & 28.18 & 27.42 & 28.00 & 69846400 & 28.00\\
+FB & 2013-01-03 & 27.88 & 28.47 & 27.59 & 27.77 & 63140600 & 27.77\\
+FB & 2013-01-04 & 28.01 & 28.93 & 27.83 & 28.76 & 72715400 & 28.76\\
+FB & 2013-01-07 & 28.69 & 29.79 & 28.65 & 29.42 & 83781800 & 29.42\\
+FB & 2013-01-08 & 29.51 & 29.60 & 28.86 & 29.06 & 45871300 & 29.06\\
+FB & 2013-01-09 & 29.67 & 30.60 & 29.49 & 30.59 & 104787700 & 30.59\\
 \bottomrule
 \end{tabular}
 
+{[}1{]} 4032 8
+
 \hspace{20 mm}
 
-Many solutions exist to compare fuel consumption and engine size. For
-simplicity, the mean and standard deviation are used to characterize the
-relationship between number of cylinders and miles per gallon.
-Implementing \emph{split-apply-combine} is as easy as grouping by a
-categorical variable and summarizing by the target measure. In this
-case, the categorical variable is the ``cyl'' variable.
+Historical performance is a function of the period returns
+(i.e.~percentage change between current price and previous price). A
+wealth index is often used to assess the investment growth, which is the
+product of the period returns and asset value during the previous
+period. The data workflow is split into two steps.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Calculate the period returns
+\item
+  Calculate the cumulative performance
+\end{enumerate}
+
+Calculate the period returns. The lag is needed to line up the previous
+period return with the current period return. The difference is then
+taken, and from the difference the period return is calculated as the
+percentage change from the initial value.
+
+For a more granular look at the code, each of the functions do the
+following. Only the ``symbol'', ``date'' and ``adjusted'' price columns
+are needed to start, so a \texttt{select} statement removes the
+unnecessary columns. Then the data is grouped by ``symbol'' using the
+\texttt{group\_by} function. The \texttt{mutate} function adds
+calculated columns to a data frame. The ``lag'' is calculated using the
+\texttt{lag} function from \texttt{dplyr}. The ``diff'' is the
+``adjusted'' closing price minus the ``lag''. The ``period.returns'' is
+the percentage change from the ``adjusted'', which is ``diff'' divided
+by ``adjusted''. The \texttt{replace\_na} function is used to remove
+\texttt{NA} values with zero. Note that an ungrouped ``tibble'' is
+returned due to the \texttt{replace\_na} function.
 
 \begin{Schunk}
 \begin{Sinput}
-mtcars %>%
-    mutate(cyl = factor(cyl)) %>%
-    group_by(cyl) %>%
-    summarize(mpg.mean = mean(mpg),
-              mpg.sd = sd(mpg))
+FANG_returns <- FANG %>%
+    select(-(open:volume)) %>%
+    group_by(symbol) %>%
+    mutate(lag = lag(adjusted),
+           diff = adjusted - lag,
+           period.returns = diff / adjusted) %>%
+    replace_na(list(period.returns = 0)) 
+head(FANG_returns)
+dim(FANG_returns)
 \end{Sinput}
 \end{Schunk}
 
-\begin{tabular}{ccc}
+\begin{tabular}{cccccc}
 \toprule
-cyl & mpg.mean & mpg.sd\\
+symbol & date & adjusted & lag & diff & period.returns\\
 \midrule
-4 & 26.66364 & 4.509828\\
-6 & 19.74286 & 1.453567\\
-8 & 15.10000 & 2.560048\\
+FB & 2013-01-02 & 28.00 & NA & NA & 0.0000000\\
+FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082823\\
+FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0344228\\
+FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0224337\\
+FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0123882\\
+FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0500164\\
 \bottomrule
 \end{tabular}
 
+{[}1{]} 4032 6
+
 \hspace{20 mm}
 
-From the results, the vehicles, when grouped by ``cyl'', appear to have
-an inverse relationship between number of cylinders and miles per
-gallon. We can also visualize this relationship using \texttt{ggplot2}.
+Now, the wealth index can be calculated. The wealth index is the
+cumulative product of the period returns multiplied by the initial
+investment value. An initial investment of \$10K USD is used as an
+example.
 
 \begin{Schunk}
 \begin{Sinput}
-mtcars %>%
-    mutate(cyl = factor(cyl)) %>%
-    ggplot(aes(x = cyl, y = mpg, fill = cyl)) +
-    geom_boxplot() +
-    labs(title = "Summarizing Relationships using Split-Apply-Combine",
-         subtitle = "Inverse Relationship between Engine Size and Fuel Efficiency",
-         x = "Engine Size (# of Cylinders)",
-         y = "Fuel Efficiency (MPG)")
+initial_investment <- 10000
+FANG_performance <- FANG_returns %>%
+    group_by(symbol) %>%
+    mutate(wealth.index = initial_investment * cumprod(1 + period.returns)) 
+head(FANG_performance)
+dim(FANG_performance)
+\end{Sinput}
+\end{Schunk}
+
+\begin{tabular}{ccccccc}
+\toprule
+symbol & date & adjusted & lag & diff & period.returns & wealth.index\\
+\midrule
+FB & 2013-01-02 & 28.00 & NA & NA & 0.0000000 & 10000.000\\
+FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082823 & 9917.177\\
+FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0344228 & 10258.554\\
+FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0224337 & 10488.691\\
+FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0123882 & 10358.755\\
+FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0500164 & 10876.863\\
+\bottomrule
+\end{tabular}
+
+{[}1{]} 4032 7
+
+\hspace{20 mm}
+
+Last, the results are visualized using \texttt{ggplot2}.
+
+\begin{Schunk}
+\begin{Sinput}
+FANG_performance %>%
+    ggplot(aes(x = date, y = wealth.index, color = symbol)) +
+    geom_line() +
+    labs(title = "Individual Stocks: Comparing the Growth of 10K",
+         x = "", y = "Investment Value") +
+    scale_y_continuous(labels = scales::dollar) + 
+    theme_minimal()
 \end{Sinput}
 
 
-\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-7-1} \end{center}
+\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-9-1} \end{center}
 
 \end{Schunk}
 
-The \emph{split-apply-combine} framework is used to solve a wide range
-of complex problems. In the next section, examples are presented to
-illustrate the power of unlocking the framework combined with data
-science workflow tools within financial analysis applications.
+The ``tidy'' ecosystem can be used to solve a wide range of complex
+problems. In the next section, examples are presented to illustrate the
+power of combining the financial analysis tools from the ``xts'' system
+with the ``tidyverse'' for financial applications.
 
-\section{Split-Apply-Combine, Applications in
-Finance}\label{split-apply-combine-applications-in-finance}
+\section{\texorpdfstring{Financial Applications with
+``tidyquant''}{Financial Applications with tidyquant}}\label{financial-applications-with-tidyquant}
 
 The financial analysis packages are difficult or impossible to use
 within the ``tidy'' ecosystem. A new tool is needed, \texttt{tidyquant}.
@@ -393,8 +485,8 @@ AYI & ACUITY BRANDS\\
 
 \hspace{20 mm}
 
-Next, we need the historical stock prices for each stock within the S\&P
-500 index. The stock prices are easy to retrieve at scale using the
+Next, the historical stock prices are needed for each stock within the
+S\&P 500 index. The stock prices are easy to retrieve at scale using the
 function, \texttt{tq\_get}, with the ``get'' option,
 \texttt{get\ =\ "stock.prices"}. \texttt{tq\_get} is a wrapper for
 \texttt{quantmod::getSymbols}, which enables passing the underlying
@@ -437,13 +529,13 @@ MMM & 3M & 2007-01-10 & 77.31 & 77.96 & 77.04 & 77.85 & 1787500 & 59.99468\\
 
 \hspace{20 mm}
 
-Next, the \emph{split-apply-combine} framework is used to group the
-prices by stock symbol and to calculate the logarithmic daily returns.
-The transform is applied using \texttt{tq\_transform}, which is used in
-situations where periodicity changes (or can change). The
-\texttt{quantmod} OHLC (open, high, low, close) notation is used to
-collect the adjusted prices (\texttt{ohlc\_fun\ =\ Ad}) and send these
-prices to the \texttt{periodReturn} function
+Next, the prices are grouped by stock symbol to calculate the
+logarithmic daily returns for each stock. The transform is applied using
+\texttt{tq\_transform}, which is used in situations where periodicity
+changes (or can change). The \texttt{quantmod} OHLC (open, high, low,
+close) notation is used to collect the adjusted prices
+(\texttt{ohlc\_fun\ =\ Ad}) and send these prices to the
+\texttt{periodReturn} function
 (\texttt{transform\_fun\ =\ periodReturn}). The additional arguments
 \texttt{period\ =\ "daily"} and \texttt{type\ =\ "log"} are passed to
 the transformation function, \texttt{periodReturn}. The daily log
@@ -514,12 +606,12 @@ AYI & 0.000701 & 0.000420 & 6.011008 & -0.000225\\
 
 \hspace{20 mm}
 
-Finally, we have the data needed to visualize risk versus reward. A plot
-of the mean daily log returns (MDLR) versus the standard deviation of
-daily log returns (SDDLR) shows the relationship. Note that observations
-(stocks) with fewer than five years of trading days (5 years x 252 trade
-days per year) are removed from the visualization to yield a long-run
-perspective.
+Finally, the data needed to visualize risk versus reward is complete. A
+plot of the mean daily log returns (MDLR) versus the standard deviation
+of daily log returns (SDDLR) shows the relationship. Note that
+observations (stocks) with fewer than five years of trading days (5
+years x 252 trade days per year) are removed from the visualization to
+yield a long-run perspective.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -536,7 +628,7 @@ sp500_stats %>%
 \end{Sinput}
 
 
-\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-17-1} \end{center}
+\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-19-1} \end{center}
 
 \end{Schunk}
 
@@ -550,11 +642,12 @@ set.
 
 \begin{Schunk}
 \begin{Sinput}
-sp500_stats %>%
+sp500_high_performers <- sp500_stats %>%
     filter(Observations >= 252 * 5,
            Stdev <= 0.02,
            ArithmeticMean >= 0.0005) %>%
-    arrange(desc(ArithmeticMean)) %>%
+    arrange(desc(ArithmeticMean)) 
+sp500_high_performers %>%
     select(1:5) %>%
     head()
 \end{Sinput}
@@ -577,24 +670,234 @@ AGN & 0.00082 & 0.00067 & 6.06114 & 0.00013\\
 
 \hspace{20 mm}
 
-\subsection{Example 2: Evaluating Performance of Multiple Portfolio
-Blends}\label{example-2-evaluating-performance-of-multiple-portfolio-blends}
+\subsection{\texorpdfstring{Example 2: Visualizing Return Consistency
+Among ``High
+Performers''}{Example 2: Visualizing Return Consistency Among High Performers}}\label{example-2-visualizing-return-consistency-among-high-performers}
+
+Example 1 can be expanded upon using the notion that excessive
+volatility is a factor that the market tends to penalize. In this
+example, the goal is to visualize returns of the top ranked prospects
+from Example 1 to determine if the group is consistently growing. This
+example will introduce a new package called \texttt{purrr}, which is
+used to map functions to ``nested'' data frames.
+
+Start with a question: \emph{Of the best stocks from Example 1, which
+offer the most consistent growth?}
+
+The easiest way to answer this question is to visualize the mean daily
+log returns (MDLR) by year. Collecting the means by year can be
+accomplished in a number of ways. The \texttt{purrr} package offers a
+new approach by applying \texttt{map} functions to tibble groups similar
+to the \texttt{apply} function in base R. The nice thing about
+\texttt{map} is that if a function can be applied to one group of the
+data, it can be ``mapped'' to many groups. This example will proceed as
+follows:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Retrieve the symbols of the top \emph{n} performers. The example uses
+  the top 10, but any number can be selected.
+\item
+  Filter and ``nest'' the returns for the top performers.
+\item
+  Create a custom function to map to each of the nested ``tibbles''.
+\item
+  Map the custom function to the ``tibble''.
+\item
+  Unnest the data frame
+\item
+  Visualize the results
+\end{enumerate}
+
+First, get the symbols of the top performers. The \texttt{top\_n}
+function can be used.
+
+\begin{Schunk}
+\begin{Sinput}
+n <- 10
+high_performers <- sp500_high_performers %>%
+    ungroup() %>%
+    select(symbol) %>%
+    top_n(n = n)
+high_performers
+\end{Sinput}
+\end{Schunk}
+
+\begin{tabular}{c}
+\toprule
+symbol\\
+\midrule
+TDG\\
+TJX\\
+UNP\\
+SHW\\
+XYL\\
+\addlinespace
+VRSK\\
+SNA\\
+UHS\\
+YUM\\
+SJM\\
+\bottomrule
+\end{tabular}
+
+\hspace{20 mm}
+
+Next, filter the S\&P 500 returns tibble to only the stocks of interest
+and ``nest'' the tibble. Nesting works on groups, so all of the data
+that is grouped on gets wrapped up into a list column.
+
+\begin{Schunk}
+\begin{Sinput}
+high_performer_returns_nested <- sp500_returns %>%
+    filter(symbol %in% high_performers$symbol) %>%
+    nest()
+high_performer_returns_nested
+\end{Sinput}
+\begin{Soutput}
+#> # A tibble: 10 × 2
+#>    symbol                 data
+#>     <chr>               <list>
+#> 1     SJM <tibble [2,518 × 2]>
+#> 2     SHW <tibble [2,518 × 2]>
+#> 3     SNA <tibble [2,518 × 2]>
+#> 4     TJX <tibble [2,518 × 2]>
+#> 5     TDG <tibble [2,518 × 2]>
+#> 6     UNP <tibble [2,518 × 2]>
+#> 7     UHS <tibble [2,518 × 2]>
+#> 8    VRSK <tibble [1,822 × 2]>
+#> 9     XYL <tibble [1,313 × 2]>
+#> 10    YUM <tibble [2,518 × 2]>
+\end{Soutput}
+\end{Schunk}
+
+\hspace{20 mm}
+
+Once the tibble is nested, create a custom function to apply to each of
+the nested tibbles. The function \texttt{calculate\_mdlr\_by\_year}
+transforms the daily log returns to mean daily log returns by year.
+
+\begin{Schunk}
+\begin{Sinput}
+calculate_mdlr_by_year <- function(dlr) {
+    dlr %>%
+        mutate(year = year(date)) %>%
+        group_by(year) %>%
+        summarize(mdlr.by.year = mean(dlr))
+}
+\end{Sinput}
+\end{Schunk}
+
+Map the custom function, \texttt{calculate\_mdlr\_by\_year}, to the
+nested data frame, \texttt{high\_performer\_returns\_nested}. This is
+done using \texttt{mutate} with \texttt{map}. The ``data'' column is no
+longer needed, so it is removed with \texttt{select}.
+
+\begin{Schunk}
+\begin{Sinput}
+high_performer_returns_mapped <- high_performer_returns_nested %>%
+    mutate(mdlr.by.year = map(data, calculate_mdlr_by_year)) %>%
+    select(-data)
+high_performer_returns_mapped
+\end{Sinput}
+\begin{Soutput}
+#> # A tibble: 10 × 2
+#>    symbol      mdlr.by.year
+#>     <chr>            <list>
+#> 1     SJM <tibble [10 × 2]>
+#> 2     SHW <tibble [10 × 2]>
+#> 3     SNA <tibble [10 × 2]>
+#> 4     TJX <tibble [10 × 2]>
+#> 5     TDG <tibble [10 × 2]>
+#> 6     UNP <tibble [10 × 2]>
+#> 7     UHS <tibble [10 × 2]>
+#> 8    VRSK  <tibble [8 × 2]>
+#> 9     XYL  <tibble [6 × 2]>
+#> 10    YUM <tibble [10 × 2]>
+\end{Soutput}
+\end{Schunk}
+
+Now, \texttt{unnest} the ``mdlr.by.year'' column to return the MDLR by
+year for each of the high performing stocks.
+
+\begin{Schunk}
+\begin{Sinput}
+high_performer_returns_mapped %>%
+    unnest() %>%
+    head()
+\end{Sinput}
+\end{Schunk}
+
+\begin{tabular}{ccc}
+\toprule
+symbol & year & mdlr.by.year\\
+\midrule
+SJM & 2007 & 0.0002575\\
+SJM & 2008 & -0.0001979\\
+SJM & 2009 & 0.0015201\\
+SJM & 2010 & 0.0003452\\
+SJM & 2011 & 0.0007943\\
+SJM & 2012 & 0.0004937\\
+\bottomrule
+\end{tabular}
+
+\hspace{20 mm}
+
+Finally, visualize the results using \texttt{ggplot2}.
+
+\begin{Schunk}
+\begin{Sinput}
+high_performer_returns_mapped %>%
+    unnest() %>%
+    ggplot(aes(x = year, y = mdlr.by.year, color = symbol)) +
+    geom_hline(yintercept = 0, color = palette_light()[[1]]) +
+    geom_line(size = 1) +
+    geom_point(size = 2) +
+    geom_smooth(method = "lm", se = FALSE, color = "blue") +
+    scale_color_tq() +
+    theme_tq() +
+    facet_wrap(~ symbol, ncol = 5) +
+    labs(title = "Comparing the Consistency of High Performers",
+         y = "Mean Daily Log Returns (MDLR)", color = "") +
+    theme(axis.text.x = element_text(angle = 60, hjust = 1),
+          axis.title.x = element_blank())
+\end{Sinput}
+
+
+\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-29-1} \end{center}
+
+\end{Schunk}
+
+The mean daily log returns when averaged by year yields a different
+picture then what the results of Example 1 portrayed. Some of the stocks
+are very consistent while others have downward trends or have negative
+returns in multiple years indicating a lack of consistency.
+
+For further analysis, with the data science modeling workflow discussed
+in \emph{R for Data Science}, a financial analyst or engineer can create
+screening metrics by running regressions for slope and intercept (refer
+to the \texttt{broom} package), counting the times an investment falls
+below zero, calculating standard deviation in MDLR by year, and more.
+Screening investments within an entire index or exchange becomes
+relatively easy even with complex metrics.
+
+\subsection{Example 3: Evaluating Performance of Multiple Portfolio
+Blends}\label{example-3-evaluating-performance-of-multiple-portfolio-blends}
 
 Portfolio aggregation is a useful technique to reduce risk while
 maintaining acceptable returns. In this example, the goal is to evaluate
-a few blended portfolios of ``FANG'' stocks (``FB'', ``AMZN'', ``NFLX'',
-and ``GOOG'').
-\footnote{The acronym, "FANG", was popularized by Jim Cramer of the popular CNBC show, Mad Money. http://www.investopedia.com/terms/f/fang-stocks-fb-amzn.asp.}
-However, more important is the conceptual idea that the number of
-weighted portfolio blends and the number of underlying assets can easily
-be increased to scale the analysis. As the example progresses, consider
-how this could be applied to an entire index of assets and hundreds of
-weighted blends.
+a few blended portfolios of FANG stocks. However, more important is the
+conceptual idea that the number of weighted portfolio blends and the
+number of underlying assets can easily be increased to scale the
+analysis. As the example progresses, consider how this could be applied
+to an entire index of assets and hundreds of weighted blends.
 
 Throughout the past half decade, the FANG stocks have experienced a
-unique combination of high returns and high volatility, making the FANG
-stocks a good example to use in a blended portfolio that reduces
-downside risk but yields high returns.
+unique combination of high returns and high volatility, making them a
+good example to use in a blended portfolio that reduces downside risk
+but yields high returns.
 
 \pagebreak
 
@@ -603,7 +906,7 @@ while maximizing return?}
 
 Several portfolio blends will be evaluated to see the historical effect
 on returns since 2013:
-\footnote{2013 was the first full year of trading data for FB. Portfolio aggregation prior to 2013 cannot be analyzed with FB.}
+\footnote{2013 was the first full year of trading data for FB. Portfolio aggregation prior to 2013 using FB cannot be analyzed.}
 
 \begin{itemize}
 \tightlist
@@ -641,16 +944,15 @@ FB & 2012-05-25 & 32.90 & 32.95 & 31.11 & 31.91 & 37149800 & 31.91\\
 \bottomrule
 \end{tabular}
 
-{[}1{]} 8849 8
+{[}1{]} 8865 8
 
 \hspace{20 mm}
 
-Next, transform to monthly returns using the \emph{split-apply-combine}
-framework. Use \texttt{group\_by} to group on the ``symbol'' column, and
-\texttt{tq\_transform} to transform the adjusted prices to monthly
-arithmetic returns. Note that ``FB'' was only actively traded for a full
-year beginning in 2013, so the investments will be compared starting
-from that year.
+Next, transform to monthly returns. Use \texttt{group\_by} to group on
+the ``symbol'' column, and \texttt{tq\_transform} to transform the
+adjusted prices to monthly arithmetic returns. Note that ``FB'' was only
+actively traded for a full year beginning in 2013, so the investments
+will be compared starting from that year.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -716,7 +1018,7 @@ FANG_wealth %>%
 \end{Sinput}
 
 
-\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-24-1} \end{center}
+\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-34-1} \end{center}
 
 \end{Schunk}
 
@@ -777,9 +1079,9 @@ Weighted portfolio aggregation involves three steps:
 desired}{Step 1: Repeat the stock returns table n times, once for each portfolio desired}}\label{step-1-repeat-the-stock-returns-table-n-times-once-for-each-portfolio-desired}
 
 Use \texttt{tq\_repeat\_df} to repeat \texttt{n\ =\ 4} times. This
-function extends the data frame row-wise, adding an index column named
-``portfolio'' and grouping by ``portfolio''. We now have four portfolio
-groups that will be evaluated.
+function extends the tibble row-wise, adding an index column named
+``portfolio'' and grouping by ``portfolio''. Four portfolio groups are
+generated.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -908,7 +1210,7 @@ FANG_portfolio_wealth  %>%
 \end{Sinput}
 
 
-\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-31-1} \end{center}
+\begin{center}\includegraphics{RInFinanceRticles_files/figure-latex/unnamed-chunk-41-1} \end{center}
 
 \end{Schunk}
 
@@ -983,9 +1285,9 @@ With the creation of the ``xts'' and ``tidyverse'' systems, high
 performance tools are available to perform financial analysis and to
 scale data science in R. Because of the separation in development of the
 two systems, the ability to scale financial analysis is limited.
-\texttt{tidyquant} unlocks the \emph{split-apply-combine} framework of
-the ``tidyverse'', increasing the scale at which financial analyses can
-now be performed.
+\texttt{tidyquant} unlocks the data science workflow for financial
+applications, increasing the scale and modeling capability of financial
+analyses.
 
 As scale increases, the vast array of possibilities becomes limited only
 by the data storage and processing capabilities of the computers on
