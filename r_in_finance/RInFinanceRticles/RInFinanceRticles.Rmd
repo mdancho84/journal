@@ -48,7 +48,7 @@ The R programming language has seen immense growth in both popularity and tools 
 
 \begin{figure}[htbp]
   \centering
-  \includegraphics[width=13cm, height=7cm]{img/timeline}
+  \includegraphics[width=13cm]{img/timeline}
   \timeline
 \end{figure}
 
