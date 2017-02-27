@@ -17,7 +17,7 @@ preamble: >
     \usepackage{caption}
     \newcommand{\timeline}{\caption*{Source: \citet{timelyportfolio}}}
     \newcommand{\tidyverse}{\caption*{Source: \citet{tidyverse}}}
-output: rticles::rjournal_article_tq
+output: html_document
 ---
 
 ```{r setup, include=FALSE}

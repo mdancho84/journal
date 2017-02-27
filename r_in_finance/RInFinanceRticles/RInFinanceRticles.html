@@ -438,7 +438,7 @@ high_performer_returns_mapped</code></pre>
 head(FANG)
 dim(FANG)</code></pre>
 
-<p>[1] 8857 8</p>
+<p>[1] 8861 8</p>
 
 <p>Next, transform to monthly returns. Use <code>group_by</code> to group on the “symbol” column, and <code>tq_transform</code> to transform the adjusted prices to monthly arithmetic returns. Note that “FB” was only actively traded for a full year beginning in 2013, so the investments will be compared starting from that year.</p>
 <pre class="r"><code>FANG_returns &lt;- FANG %&gt;%
