@@ -531,22 +531,21 @@ MMM & 3M & 2007-01-10 & 77.31 & 77.96 & 77.04 & 77.85 & 1787500 & 59.99468\\
 
 Next, the prices are grouped by stock symbol to calculate the
 logarithmic daily returns for each stock. The transform is applied using
-\texttt{tq\_transform}, which is used in situations where periodicity
+\texttt{tq\_transmute}, which is used in situations where periodicity
 changes (or can change). The \texttt{quantmod} OHLC (open, high, low,
 close) notation is used to collect the adjusted prices
 (\texttt{ohlc\_fun\ =\ Ad}) and send these prices to the
-\texttt{periodReturn} function
-(\texttt{transform\_fun\ =\ periodReturn}). The additional arguments
-\texttt{period\ =\ "daily"} and \texttt{type\ =\ "log"} are passed to
-the transformation function, \texttt{periodReturn}. The daily log
-returns (DLR) for each of the 502 groups of stock symbols is generated
-below.
+\texttt{periodReturn} function (\texttt{mutate\_fun\ =\ periodReturn}).
+The additional arguments \texttt{period\ =\ "daily"} and
+\texttt{type\ =\ "log"} are passed to the mutating function,
+\texttt{periodReturn}. The daily log returns (DLR) for each of the 502
+groups of stock symbols is generated below.
 
 \begin{Schunk}
 \begin{Sinput}
 sp500_returns <- sp500_stock_prices %>%
     group_by(symbol) %>%
-    tq_transform(ohlc_fun = Ad, transform_fun = periodReturn, 
+    tq_transmute(ohlc_fun = Ad, mutate_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
 head(sp500_returns)
 dim(sp500_returns)
@@ -948,11 +947,11 @@ FB & 2012-05-25 & 32.90 & 32.95 & 31.11 & 31.91 & 37149800 & 31.91\\
 
 \hspace{20 mm}
 
-Next, transform to monthly returns. Use \texttt{group\_by} to group on
-the ``symbol'' column, and \texttt{tq\_transform} to transform the
-adjusted prices to monthly arithmetic returns. Note that ``FB'' was only
-actively traded for a full year beginning in 2013, so the investments
-will be compared starting from that year.
+Next, calculate monthly returns. Use \texttt{group\_by} to group on the
+``symbol'' column, and \texttt{tq\_transmute} to transform the adjusted
+prices to monthly arithmetic returns. Note that ``FB'' was only actively
+traded for a full year beginning in 2013, so the investments will be
+compared starting from that year.
 
 \begin{Schunk}
 \begin{Sinput}
@@ -960,8 +959,8 @@ FANG_returns <- FANG %>%
     filter(date >= ymd("2013-01-01"),
            date <  ymd("2017-01-01")) %>%
     group_by(symbol) %>%
-    tq_transform(ohlc_fun = Ad,
-                 transform_fun = periodReturn,
+    tq_transmute(ohlc_fun = Ad,
+                 mutate_fun = periodReturn,
                  period = "monthly",
                  col_rename = "returns")
 slice(FANG_returns, 1:2)
