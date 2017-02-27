@@ -8,16 +8,16 @@ author:
     affiliation: Business Science
     email:  dvaughan@business-science.io
 abstract: >
-    Financial analysis and data science in the R programming language have followed separate paths resulting in two important systems: "xts" and "tidyverse". The advantage of the "xts" system is in the management of time series financial data. The advantage of the "tidyverse" system is in the ability to implement a set of packages that have a uniform structure and data representation that works within the data science workflow. Because of the separation in development, the two systems are difficult to use together, limiting the full potential of financial analysis within R. The `tidyquant` package solves this problem by integrating several of the best financial analysis packages with the "tidy" ecosystem. The integration unlocks the data science workflow, which enables modeling and scaling analyses in a "tidy" way.
+    Financial analysis and data science in the R programming language have followed separate paths resulting in two important systems: "xts" and "tidyverse". The advantage of the "xts" system is in the management of time series financial data. The advantage of the "tidyverse" system is in the ability to implement a set of packages that have a uniform structure and data representation that work within the data science workflow. Because of the separation in development, the two systems are difficult to use together limiting the full potential of financial analysis within R. The `tidyquant` package solves this problem by integrating several of the best financial analysis packages with the "tidy" ecosystem. The integration unlocks the data science workflow, which enables modeling and scaling analyses in a "tidy" way.
     
     
-    Two usage cases are discussed to illustrate the benefits of `tidyquant`. The first example uses the scaling capabilities to provide an answer for how the financial market values risk versus reward. The second example evaluates methods to scale the performance analysis of multiple portfolios using combinations of weighted asset blends. These examples only scratch the surface of what is possible with `tidyquant`.
+    Three usage cases are discussed to illustrate the benefits of `tidyquant`. The first example uses the scaling capabilities to provide an answer for how the financial market values risk versus reward. The second example builds on the first by visualizing the returns over time and illustrating how the `purrr` package can be used to apply functions to data frames. The third example evaluates methods to scale the performance analysis of multiple portfolios using combinations of weighted asset blends. These examples only scratch the surface of what is possible with `tidyquant`.
     
 preamble: >
     \usepackage{caption}
     \newcommand{\timeline}{\caption*{Source: \citet{timelyportfolio}}}
     \newcommand{\tidyverse}{\caption*{Source: \citet{tidyverse}}}
-output: html_document
+output: rticles::rjournal_article_tq
 ---
 
 ```{r setup, include=FALSE}
@@ -110,9 +110,11 @@ In the next section, an analysis is performed with the "tidyverse" to illustrate
 
 # Benefits of the "tidyverse"
 
-One of the primary benefits of the "tidyverse" is the ability to work with grouped data sets. The core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is that the framework enables scaling analyses from one group to many groups and comparing each group to each other. A simple example using the `FANG` data set illustrates this framework.  
+One of the primary benefits of the "tidyverse" is the ability to work with grouped data sets. The core concept is to split a data set into groups, apply functions to independent groups, then recombine the results. The value in this approach is the ability to scale analyses from one group to many groups and comparing each group to each other. A simple example using the `FANG` data set from the `tidyquant` package illustrates this framework.
 
 Start with a question: _What is the historical performance for the FANG tech stocks?_
+
+Load the "tidyverse" libraries. The `tidyquant` package is loaded to get the `FANG` data set and to load the `tidyverse` package.  Only `tidyverse` functionality will be used in this example.
 
 ```{r}
 # Load the tidyquant package to access the FANG data set.
@@ -139,7 +141,7 @@ dim(FANG)
 Historical performance is a function of the period returns (i.e. percentage change between current price and previous price). A wealth index is often used to assess the investment growth, which is the product of the period returns and asset value during the previous period. The data workflow is split into two steps.
 
 1. Calculate the period returns 
-2. Calculate the cumulative performance
+2. Calculate the cumulative performance using a wealth index
 
 Calculate the period returns. The lag is needed to line up the previous period return with the current period return. The difference is then taken, and from the difference the period return is calculated as the percentage change from the initial value. 
 
@@ -195,7 +197,7 @@ dim(FANG_performance)
 
 \hspace{20 mm}
 
-Last, the results are visualized using `ggplot2`.  
+Last, the performance of the individual stocks using daily compounding of the returns are visualized using `ggplot2`. 
 
 ```{r}
 FANG_performance %>%
@@ -209,7 +211,7 @@ FANG_performance %>%
 
 
 
-The "tidy" ecosystem can be used to solve a wide range of complex problems. In the next section, examples are presented to illustrate the power of combining the financial analysis tools from the "xts" system with the "tidyverse" for financial applications.
+The "tidy" ecosystem can be used to solve a wide range of complex problems because it enables grouping of data sets and applying a data science workflow. In the next section, examples are presented to illustrate the power of combining the financial analysis tools from the "xts" system with the "tidyverse" for financial applications.
 
 
 # Financial Applications with "tidyquant"
@@ -435,7 +437,7 @@ high_performer_returns_mapped %>%
 
 \hspace{20 mm}
 
-Finally, visualize the results using `ggplot2`.
+Finally, visualize the results using `ggplot2`. The mean daily log returns when averaged by year yields a different picture then what the results of Example 1 portrayed. Some of the stocks are exhibit consistent growth (e.g. SJM) while others have more volatile returns or negative returns in multiple years indicating a lack of consistency (e.g. UHS). 
 
 ```{r, fig.width=5, fig.height=3.8, fig.align="center"}
 high_performer_returns_mapped %>%
@@ -454,14 +456,14 @@ high_performer_returns_mapped %>%
           axis.title.x = element_blank())
 ```
 
-The mean daily log returns when averaged by year yields a different picture then what the results of Example 1 portrayed. Some of the stocks are very consistent while others have downward trends or have negative returns in multiple years indicating a lack of consistency. 
 
-For further analysis, with the data science modeling workflow discussed in _R for Data Science_, a financial analyst or engineer can create screening metrics by running regressions for slope and intercept (refer to the `broom` package), counting the times an investment falls below zero, calculating standard deviation in MDLR by year, and more. Screening investments within an entire index or exchange becomes relatively easy even with complex metrics.   
+
+This analysis can be expanded even further. With the data science modeling workflow discussed in _R for Data Science_ \citep{R4DS2017}, a financial analyst or engineer can apply prediction models to the data set (refer to the chapters on modeling using the `broom` package). Custom screening metrics can be developed such as using the coefficients of a regression model, counting the times an investment falls below zero, calculating standard deviation in MDLR by year, and more. Screening investments within an entire index or exchange becomes relatively easy even with complex metrics. The blog article, [Russel 2000 Quantitative Stock Analysis in R: Six Stocks with Amazing, Consistent Growth](http://www.business-science.io/investments/2016/11/30/Russell2000_Analysis.html), elaborates on the details behind using the `purrr` package to create complex screening metrics.
 
 
 ## Example 3: Evaluating Performance of Multiple Portfolio Blends
 
-Portfolio aggregation is a useful technique to reduce risk while maintaining acceptable returns. In this example, the goal is to evaluate a few blended portfolios of FANG stocks. However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this could be applied to an entire index of assets and hundreds of weighted blends.  
+Portfolio aggregation (the aggregation of assets using a weighted blend) is a useful technique to reduce risk while maintaining acceptable returns. The technique is typically used in portfolio attribution, comparing portfolios against a benchmark. In this example, the goal is to evaluate a few blended portfolios of FANG stocks. However, more important is the conceptual idea that the number of weighted portfolio blends and the number of underlying assets can easily be increased to scale the analysis. As the example progresses, consider how this approach could be applied to an entire index of assets and hundreds of weighted blends.  
 
 Throughout the past half decade, the FANG stocks have experienced a unique combination of high returns and high volatility, making them a good example to use in a blended portfolio that reduces downside risk but yields high returns. 
 
@@ -594,7 +596,7 @@ dim(FANG_returns_mult)
 
 #### Step 2: Create a Weights Table
 
-Construct a weights table using the portfolio blending parameters, which will be mapped to the stocks within each of the portfolios in the next step. The format of the weights table is critical. The table must have three columns, "portfolio", "stocks", and "weights". Make sure to group by the portfolio column.
+Construct a weights table using the portfolio blending parameters, which will be mapped to the stocks within each of the portfolios in the next step. The format of the weights table is critical. The table must have three columns, "portfolio", "stocks", and "weights". Make sure to group by the "portfolio" column.
 
 * Portfolio 1: 50% FB, 25% AMZN, 25% NFLX, 0% GOOG
 * Portfolio 2: 0% FB, 50% AMZN, 25% NFLX, 25% GOOG
@@ -713,7 +715,7 @@ FANG_portfolio_wealth %>%
 
 With the creation of the "xts" and "tidyverse" systems, high performance tools are available to perform financial analysis and to scale data science in R. Because of the separation in development of the two systems, the ability to scale financial analysis is limited. `tidyquant` unlocks the data science workflow for financial applications, increasing the scale and modeling capability of financial analyses. 
 
-As scale increases, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. `tidyquant` is being built with extendibility in mind, allowing for potential integration with Apache Spark\textsuperscript{TM} (large-scale data processing), `multidplyr` (localized multicore parallel processing), and even Bloomberg Terminal\textsuperscript{\textregistered} integration for access to better performance and higher quality data. Further, with advances in artificial intelligence and machine learning, the potential for financial analysis at scale is in its infancy. This is an exciting time. As `tidyquant`, complimentary R software packages, and technology in general evolves, financial analysis will certainly benefit from the powerful speed, scale, and autonomous learning that is rapidly becoming available.
+As scale and data science functionality increases, the vast array of possibilities becomes limited only by the data storage and processing capabilities of the computers on which the computations are performed. With advances in cloud technology, parallel processing, and optimization algorithms, the tools are available to scale analyses to terabytes worth of financial data in real time. `tidyquant` is being built with extendibility in mind, allowing for potential integration with Apache Spark\textsuperscript{TM} (large-scale data processing), `multidplyr` (localized multicore parallel processing), and even Bloomberg Terminal\textsuperscript{\textregistered} integration for access to better performance and higher quality data. Further, with advances in artificial intelligence and machine learning, the potential for financial analysis at scale is in its infancy. This is an exciting time. As `tidyquant`, complimentary R software packages, and technology in general evolves, financial analysis will certainly benefit from the powerful speed, scale, and autonomous learning that is rapidly becoming available.
 
 \pagebreak
 
