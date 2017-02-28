@@ -377,8 +377,8 @@ high_performers
 n <- 10
 high_performers <- sp500_high_performers %>%
     ungroup() %>%
-    select(symbol) %>%
-    top_n(n = n)
+    select(symbol, ArithmeticMean, Stdev) %>%
+    slice(1:10)
 
 high_performers %>%
     kable(format = "latex", align = 'c', booktabs = TRUE)
@@ -437,7 +437,7 @@ high_performer_returns_mapped %>%
 
 \hspace{20 mm}
 
-Finally, visualize the results using `ggplot2`. The mean daily log returns when averaged by year yields a different picture then what the results of Example 1 portrayed. Some of the stocks exhibit consistent growth (e.g. SJM) while others have more volatile returns or negative returns in multiple years indicating a lack of consistency (e.g. UHS). 
+Finally, visualize the results using `ggplot2`. The mean daily log returns when averaged by year yields a different picture then what the results of Example 1 portrayed. Some of the stocks exhibit consistent growth (e.g. ROST) while others have more volatile returns or negative returns in multiple years indicating a lack of consistency (e.g. DLPH). 
 
 ```{r, fig.width=5, fig.height=3.8, fig.align="center"}
 high_performer_returns_mapped %>%
