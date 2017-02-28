@@ -362,7 +362,7 @@ The easiest way to answer this question is to visualize the mean daily log retur
 6. Visualize the results.
 
 
-First, get the symbols of the top performers. Since the `sp_500_high_performers` data frame is arranged in decreasing MDLE, the `slice` function can be used to collect the top performers. 
+First, get the symbols of the top performers. Since the `sp_500_high_performers` data frame is arranged in decreasing MDLR, the `slice` function can be used to collect the top performers. 
 
 ```{r, eval=FALSE}
 n <- 10
@@ -374,6 +374,11 @@ high_performers
 ```
 
 ```{r, echo=FALSE, results="asis"}
+n <- 10
+high_performers <- sp500_high_performers %>%
+    ungroup() %>%
+    select(symbol, ArithmeticMean, Stdev) %>%
+    slice(1:n)
 high_performers %>%
     kable(format = "latex", align = 'c', booktabs = TRUE)
 ```
