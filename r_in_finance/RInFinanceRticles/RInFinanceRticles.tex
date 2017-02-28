@@ -715,35 +715,37 @@ that if a function can be applied to one group of the data, it can be
   Visualize the results.
 \end{enumerate}
 
-First, get the symbols of the top performers. The \texttt{top\_n}
-function can be used.
+First, get the symbols of the top performers. Since the
+\texttt{sp\_500\_high\_performers} data frame is arranged in decreasing
+MDLR, the \texttt{slice} function can be used to collect the top
+performers.
 
 \begin{Schunk}
 \begin{Sinput}
 n <- 10
 high_performers <- sp500_high_performers %>%
     ungroup() %>%
-    select(symbol) %>%
-    top_n(n = n)
+    select(symbol, ArithmeticMean, Stdev) %>%
+    slice(1:n)
 high_performers
 \end{Sinput}
 \end{Schunk}
 
-\begin{tabular}{c}
+\begin{tabular}{ccc}
 \toprule
-symbol\\
+symbol & ArithmeticMean & Stdev\\
 \midrule
-TDG\\
-TJX\\
-UNP\\
-SHW\\
-XYL\\
+TDG & 0.001157 & 0.019580\\
+FBHS & 0.001110 & 0.018597\\
+DLPH & 0.000938 & 0.017123\\
+ROST & 0.000897 & 0.018166\\
+ORLY & 0.000857 & 0.017784\\
 \addlinespace
-VRSK\\
-SNA\\
-UHS\\
-YUM\\
-SJM\\
+AGN & 0.000825 & 0.017793\\
+EW & 0.000817 & 0.019710\\
+DLTR & 0.000803 & 0.019179\\
+AZO & 0.000753 & 0.015612\\
+TJX & 0.000708 & 0.017008\\
 \bottomrule
 \end{tabular}
 
@@ -764,16 +766,16 @@ high_performer_returns_nested
 #> # A tibble: 10 × 2
 #>    symbol                 data
 #>     <chr>               <list>
-#> 1     SJM <tibble [2,518 × 2]>
-#> 2     SHW <tibble [2,518 × 2]>
-#> 3     SNA <tibble [2,518 × 2]>
-#> 4     TJX <tibble [2,518 × 2]>
-#> 5     TDG <tibble [2,518 × 2]>
-#> 6     UNP <tibble [2,518 × 2]>
-#> 7     UHS <tibble [2,518 × 2]>
-#> 8    VRSK <tibble [1,822 × 2]>
-#> 9     XYL <tibble [1,313 × 2]>
-#> 10    YUM <tibble [2,518 × 2]>
+#> 1     AGN <tibble [2,518 × 2]>
+#> 2     AZO <tibble [2,518 × 2]>
+#> 3    DLPH <tibble [1,288 × 2]>
+#> 4    DLTR <tibble [2,518 × 2]>
+#> 5      EW <tibble [2,518 × 2]>
+#> 6    FBHS <tibble [1,332 × 2]>
+#> 7    ORLY <tibble [2,518 × 2]>
+#> 8    ROST <tibble [2,518 × 2]>
+#> 9     TJX <tibble [2,518 × 2]>
+#> 10    TDG <tibble [2,518 × 2]>
 \end{Soutput}
 \end{Schunk}
 
@@ -812,16 +814,16 @@ high_performer_returns_mapped
 #> # A tibble: 10 × 2
 #>    symbol      mdlr.by.year
 #>     <chr>            <list>
-#> 1     SJM <tibble [10 × 2]>
-#> 2     SHW <tibble [10 × 2]>
-#> 3     SNA <tibble [10 × 2]>
-#> 4     TJX <tibble [10 × 2]>
-#> 5     TDG <tibble [10 × 2]>
-#> 6     UNP <tibble [10 × 2]>
-#> 7     UHS <tibble [10 × 2]>
-#> 8    VRSK  <tibble [8 × 2]>
-#> 9     XYL  <tibble [6 × 2]>
-#> 10    YUM <tibble [10 × 2]>
+#> 1     AGN <tibble [10 × 2]>
+#> 2     AZO <tibble [10 × 2]>
+#> 3    DLPH  <tibble [6 × 2]>
+#> 4    DLTR <tibble [10 × 2]>
+#> 5      EW <tibble [10 × 2]>
+#> 6    FBHS  <tibble [6 × 2]>
+#> 7    ORLY <tibble [10 × 2]>
+#> 8    ROST <tibble [10 × 2]>
+#> 9     TJX <tibble [10 × 2]>
+#> 10    TDG <tibble [10 × 2]>
 \end{Soutput}
 \end{Schunk}
 
@@ -840,12 +842,12 @@ high_performer_returns_mapped %>%
 \toprule
 symbol & year & mdlr.by.year\\
 \midrule
-SJM & 2007 & 0.0002575\\
-SJM & 2008 & -0.0001979\\
-SJM & 2009 & 0.0015201\\
-SJM & 2010 & 0.0003452\\
-SJM & 2011 & 0.0007943\\
-SJM & 2012 & 0.0004937\\
+AGN & 2007 & 0.0001253\\
+AGN & 2008 & -0.0000839\\
+AGN & 2009 & 0.0015845\\
+AGN & 2010 & 0.0010532\\
+AGN & 2011 & 0.0006171\\
+AGN & 2012 & 0.0014174\\
 \bottomrule
 \end{tabular}
 
@@ -854,9 +856,9 @@ SJM & 2012 & 0.0004937\\
 Finally, visualize the results using \texttt{ggplot2}. The mean daily
 log returns when averaged by year yields a different picture then what
 the results of Example 1 portrayed. Some of the stocks exhibit
-consistent growth (e.g.~SJM) while others have more volatile returns or
+consistent growth (e.g.~ROST) while others have more volatile returns or
 negative returns in multiple years indicating a lack of consistency
-(e.g.~UHS).
+(e.g.~DLPH).
 
 \begin{Schunk}
 \begin{Sinput}
