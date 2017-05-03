@@ -151,7 +151,7 @@ FANG_returns <- FANG %>%
     group_by(symbol) %>%
     mutate(lag = lag(adjusted),
            diff = adjusted - lag,
-           period.returns = diff / adjusted) %>%
+           period.returns = diff / lag) %>%
     replace_na(list(period.returns = 0)) 
 head(FANG_returns)
 dim(FANG_returns)
@@ -164,7 +164,7 @@ FANG_returns <- FANG %>%
     group_by(symbol) %>%
     mutate(lag = lag(adjusted),
            diff = adjusted - lag,
-           period.returns = diff / adjusted) %>%
+           period.returns = diff / lag) %>%
     replace_na(list(period.returns = 0))
 kable(head(FANG_returns), format = "latex", align = 'c', booktabs = TRUE)
 dim(FANG_returns)
@@ -264,12 +264,12 @@ dim(sp500_stock_prices)
 
 \hspace{20 mm}
 
-Next, the prices are grouped by stock symbol to calculate the logarithmic daily returns for each stock. The transform is applied using `tq_transmute`, which is used in situations where periodicity changes (or can change). The `quantmod` OHLC (open, high, low, close) notation is used to collect the adjusted prices (`ohlc_fun = Ad`) and send these prices to the `periodReturn` function (`mutate_fun = periodReturn`). The additional arguments `period = "daily"` and `type = "log"` are passed to the mutating function, `periodReturn`. The daily log returns (DLR) for each of the `r sp500_returns$symbol %>% unique() %>% length()` groups of stock symbols is generated below.
+Next, the prices are grouped by stock symbol to calculate the logarithmic daily returns for each stock. The transform is applied using `tq_transmute`, which is used in situations where periodicity changes (or can change). The `select` argument is use to select a column (or columns) and send these prices to the `periodReturn` function (`mutate_fun = periodReturn`). The additional arguments `period = "daily"` and `type = "log"` are passed to the mutating function, `periodReturn`. The daily log returns (DLR) for each of the `r sp500_returns$symbol %>% unique() %>% length()` groups of stock symbols is generated below.
 
 ```{r, eval = F}
 sp500_returns <- sp500_stock_prices %>%
     group_by(symbol) %>%
-    tq_transmute(ohlc_fun = Ad, mutate_fun = periodReturn, 
+    tq_transmute(select = adjusted, mutate_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
 head(sp500_returns)
 dim(sp500_returns)
@@ -500,9 +500,9 @@ FANG_returns <- FANG %>%
     filter(date >= ymd("2013-01-01"),
            date <  ymd("2017-01-01")) %>%
     group_by(symbol) %>%
-    tq_transmute(ohlc_fun = Ad,
+    tq_transmute(select     = adjusted,
                  mutate_fun = periodReturn,
-                 period = "monthly",
+                 period     = "monthly",
                  col_rename = "returns")
 slice(FANG_returns, 1:2)
 dim(FANG_returns)
@@ -513,9 +513,9 @@ FANG_returns <- FANG %>%
     filter(date >= ymd("2013-01-01"),
            date <  ymd("2017-01-01")) %>%
     group_by(symbol) %>%
-    tq_transmute(ohlc_fun = Ad,
+    tq_transmute(select     = adjusted,
                  mutate_fun = periodReturn,
-                 period = "monthly",
+                 period     = "monthly",
                  col_rename = "returns")
 kable(slice(FANG_returns, 1:2), format = "latex", align = 'c', booktabs = TRUE)
 dim(FANG_returns)
