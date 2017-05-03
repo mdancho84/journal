@@ -327,7 +327,7 @@ FANG_returns <- FANG %>%
     group_by(symbol) %>%
     mutate(lag = lag(adjusted),
            diff = adjusted - lag,
-           period.returns = diff / adjusted) %>%
+           period.returns = diff / lag) %>%
     replace_na(list(period.returns = 0)) 
 head(FANG_returns)
 dim(FANG_returns)
@@ -339,11 +339,11 @@ dim(FANG_returns)
 symbol & date & adjusted & lag & diff & period.returns\\
 \midrule
 FB & 2013-01-02 & 28.00 & NA & NA & 0.0000000\\
-FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082823\\
-FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0344228\\
-FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0224337\\
-FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0123882\\
-FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0500164\\
+FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082143\\
+FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0356500\\
+FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0229485\\
+FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0122366\\
+FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0526497\\
 \bottomrule
 \end{tabular}
 
@@ -372,11 +372,11 @@ dim(FANG_performance)
 symbol & date & adjusted & lag & diff & period.returns & wealth.index\\
 \midrule
 FB & 2013-01-02 & 28.00 & NA & NA & 0.0000000 & 10000.000\\
-FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082823 & 9917.177\\
-FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0344228 & 10258.554\\
-FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0224337 & 10488.691\\
-FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0123882 & 10358.755\\
-FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0500164 & 10876.863\\
+FB & 2013-01-03 & 27.77 & 28.00 & -0.230000 & -0.0082143 & 9917.857\\
+FB & 2013-01-04 & 28.76 & 27.77 & 0.990000 & 0.0356500 & 10271.429\\
+FB & 2013-01-07 & 29.42 & 28.76 & 0.660000 & 0.0229485 & 10507.143\\
+FB & 2013-01-08 & 29.06 & 29.42 & -0.360001 & -0.0122366 & 10378.571\\
+FB & 2013-01-09 & 30.59 & 29.06 & 1.530001 & 0.0526497 & 10925.000\\
 \bottomrule
 \end{tabular}
 
@@ -538,20 +538,19 @@ MMM & 3M & 2007-01-10 & 77.31 & 77.96 & 77.04 & 77.85 & 1787500 & 59.99468\\
 Next, the prices are grouped by stock symbol to calculate the
 logarithmic daily returns for each stock. The transform is applied using
 \texttt{tq\_transmute}, which is used in situations where periodicity
-changes (or can change). The \texttt{quantmod} OHLC (open, high, low,
-close) notation is used to collect the adjusted prices
-(\texttt{ohlc\_fun\ =\ Ad}) and send these prices to the
-\texttt{periodReturn} function (\texttt{mutate\_fun\ =\ periodReturn}).
-The additional arguments \texttt{period\ =\ "daily"} and
-\texttt{type\ =\ "log"} are passed to the mutating function,
-\texttt{periodReturn}. The daily log returns (DLR) for each of the 502
-groups of stock symbols is generated below.
+changes (or can change). The \texttt{select} argument is use to select a
+column (or columns) and send these prices to the \texttt{periodReturn}
+function (\texttt{mutate\_fun\ =\ periodReturn}). The additional
+arguments \texttt{period\ =\ "daily"} and \texttt{type\ =\ "log"} are
+passed to the mutating function, \texttt{periodReturn}. The daily log
+returns (DLR) for each of the 502 groups of stock symbols is generated
+below.
 
 \begin{Schunk}
 \begin{Sinput}
 sp500_returns <- sp500_stock_prices %>%
     group_by(symbol) %>%
-    tq_transmute(ohlc_fun = Ad, mutate_fun = periodReturn, 
+    tq_transmute(select = adjusted, mutate_fun = periodReturn, 
                  period = "daily", type = "log", col_rename = "dlr")
 head(sp500_returns)
 dim(sp500_returns)
@@ -961,7 +960,7 @@ FB & 2012-05-25 & 32.90 & 32.95 & 31.11 & 31.91 & 37149800 & 31.91\\
 \bottomrule
 \end{tabular}
 
-{[}1{]} 8869 8
+{[}1{]} 9049 8
 
 \hspace{20 mm}
 
@@ -977,9 +976,9 @@ FANG_returns <- FANG %>%
     filter(date >= ymd("2013-01-01"),
            date <  ymd("2017-01-01")) %>%
     group_by(symbol) %>%
-    tq_transmute(ohlc_fun = Ad,
+    tq_transmute(select     = adjusted,
                  mutate_fun = periodReturn,
-                 period = "monthly",
+                 period     = "monthly",
                  col_rename = "returns")
 slice(FANG_returns, 1:2)
 dim(FANG_returns)
